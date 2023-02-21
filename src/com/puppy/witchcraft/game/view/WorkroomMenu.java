@@ -1,14 +1,18 @@
 package com.puppy.witchcraft.game.view;
 
-import java.awt.Color;
+import static com.puppy.witchcraft.common.CommonConstants.changePanel;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.puppy.witchcraft.common.CommonConstants;
 import com.puppy.witchcraft.common.MainFrame;
+import com.puppy.witchcraft.game.view.pages.PotionCraftPage;
+import com.puppy.witchcraft.game.view.pages.WorkroomQuest;
 
 public class WorkroomMenu extends JPanel {
 	
@@ -33,19 +37,36 @@ public class WorkroomMenu extends JPanel {
 		greetingsBtn.setBounds(300, 120, 450, 100);
 		greetingsBtn.setContentAreaFilled(false);
 		
+		greetingsBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changePanel(mf, wrMenu, new WorkroomQuest(mf));
+			}
+		});
+		
 		/* 포션 제작하기 버튼 생성 */
 		JButton potioncraftBtn = new JButton(new ImageIcon("images/select/potion_crafting.png"));
 		potioncraftBtn.setBounds(300, 225, 450, 100);
 		potioncraftBtn.setContentAreaFilled(false);
+		
+		potioncraftBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changePanel(mf, wrMenu, new PotionCraftPage(mf));
+			}
+		});
 		
 		/* 나가기 버튼 생성 */
 		JButton quitBtn = new JButton(new ImageIcon("images/select/map_quit.png"));
 		quitBtn.setBounds(300, 330, 450, 100);
 		quitBtn.setContentAreaFilled(false);
 		
-		
-		
-		
+		quitBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changePanel(mf, wrMenu, new MainMap(mf));
+			}
+		});
 		
 		/* 컴포넌트들 넣을 패널 세팅 */
 		this.setLayout(null);

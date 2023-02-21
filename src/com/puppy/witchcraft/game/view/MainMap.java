@@ -1,14 +1,17 @@
 package com.puppy.witchcraft.game.view;
 
-import java.awt.Color;
+import static com.puppy.witchcraft.common.CommonConstants.changePanel;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.puppy.witchcraft.common.CommonConstants;
 import com.puppy.witchcraft.common.MainFrame;
+import com.puppy.witchcraft.game.view.pages.SavePage;
 
 public class MainMap extends JPanel {
 	
@@ -32,6 +35,13 @@ public class MainMap extends JPanel {
 		saveBtn.setBounds(20, 20, 50, 50);
 		saveBtn.setContentAreaFilled(false);
 		
+		saveBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changePanel(mf, mainMap, new SavePage(mf));
+			}
+		});
+		
 		/* 인벤토리 버튼 이미지로 생성 */
 		JButton invenBtn = new JButton(new ImageIcon("images/ui/ui_inventory.png"));
 		invenBtn.setBounds(620, 460, 70, 70);
@@ -47,15 +57,39 @@ public class MainMap extends JPanel {
 		potionBtn.setBounds(300, 100, 100, 55);
 		potionBtn.setContentAreaFilled(false);
 		
+		/* 포션가게 버튼 클릭 시 포션가게 패널로 변경*/
+		potionBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changePanel(mf, mainMap, new WorkroomMenu(mf));
+			}
+		});
+		
 		/* 숲으로 가는 버튼 이미지로 생성 */
 		JButton forestBtn = new JButton(new ImageIcon("images/ui/button_forest.png"));
 		forestBtn.setBounds(600, 350, 100, 55);
 		forestBtn.setContentAreaFilled(false);
 		
+		/* 숲 버튼 클릭 시 숲 패널로 변경*/
+		forestBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changePanel(mf, mainMap, new ForestMenu(mf));
+			}
+		});
+		
 		/* 상점으로 가는 버튼 이미지로 생성 */
 		JButton storeBtn = new JButton(new ImageIcon("images/ui/button_store.png"));
 		storeBtn.setBounds(140, 350, 100, 55);
 		storeBtn.setContentAreaFilled(false);
+		
+		/* 상점 버튼 클릭 시 상점 패널로 변경*/
+		storeBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changePanel(mf, mainMap, new StoreMenu(mf)); //임시로 포션제작페이지로 이동
+			}
+		});
 		
 		/* 컴포넌트들 넣을 패널 세팅 */
 		this.setLayout(null);
