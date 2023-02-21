@@ -1,24 +1,20 @@
 package com.puppy.witchcraft.game.model.dto;
 
-import java.util.List;
-
 public class RecipeDTO {
 	
 	private int recipeNo;
-	private String recipeName;
 	private int itemNo;
-	private List<ItemDTO> items;
-	private String recipeImageNo;	//이미지 테이블의 포션 번호로 참조
+	private int itemCount;
+	private int potionNo;
 	
 	public RecipeDTO() {}
 
-	public RecipeDTO(int recipeNo, String recipeName, int itemNo, List<ItemDTO> items, String recipeImageNo) {
+	public RecipeDTO(int recipeNo, int itemNo, int itemCount, int potionNo) {
 		super();
 		this.recipeNo = recipeNo;
-		this.recipeName = recipeName;
 		this.itemNo = itemNo;
-		this.items = items;
-		this.recipeImageNo = recipeImageNo;
+		this.itemCount = itemCount;
+		this.potionNo = potionNo;
 	}
 
 	public int getRecipeNo() {
@@ -29,14 +25,6 @@ public class RecipeDTO {
 		this.recipeNo = recipeNo;
 	}
 
-	public String getRecipeName() {
-		return recipeName;
-	}
-
-	public void setRecipeName(String recipeName) {
-		this.recipeName = recipeName;
-	}
-
 	public int getItemNo() {
 		return itemNo;
 	}
@@ -45,26 +33,27 @@ public class RecipeDTO {
 		this.itemNo = itemNo;
 	}
 
-	public List<ItemDTO> getItems() {
-		return items;
+	public int getItemCount() {
+		return itemCount;
 	}
 
-	public void setItems(List<ItemDTO> items) {
-		this.items = items;
+	public void setItemCount(int itemCount) {
+		this.itemCount = itemCount;
 	}
 
-	public String getRecipeImageNo() {
-		return recipeImageNo;
+	public int getPotionNo() {
+		return potionNo;
 	}
 
-	public void setRecipeImageNo(String recipeImageNo) {
-		this.recipeImageNo = recipeImageNo;
+	public void setPotionNo(int potionNo) {
+		this.potionNo = potionNo;
 	}
 
 	@Override
 	public String toString() {
-		return "RecipeDTO [recipeNo=" + recipeNo + ", recipeName=" + recipeName + ", itemNo=" + itemNo + ", items="
-				+ items + ", recipeImageNo=" + recipeImageNo + "]";
+		return "RecipeDTO [recipeNo=" + recipeNo + ", itemNo=" + itemNo + ", itemCount=" + itemCount + ", potionNo="
+				+ potionNo + "]";
 	}
-
+	
+	
 }
