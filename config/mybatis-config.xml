@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
 <configuration>
-	<properties resource="connection-info.properties"/>
-	
-	<typeAliases>
-		<typeAlias type="com.greedy.common.SearchCriteria" alias="SearchCriteria"/>
-	</typeAliases>
-	
+	<properties resource="connection-info.properties" />
+
 	<environments default="dev">
 		<environment id="dev">
 			<transactionManager type="JDBC" />
@@ -18,7 +14,13 @@
 			</dataSource>
 		</environment>
 	</environments>
+
 	<mappers>
-		<package name="com.puppy.witchcraft.game.model.mapper"/>
+		<package name="com.puppy.witchcraft.game.model.mapper.craft" />
+		<package name="com.puppy.witchcraft.game.model.mapper.forest" />
+		<package name="com.puppy.witchcraft.game.model.mapper.player" />
+		<package name="com.puppy.witchcraft.game.model.mapper.quest" />
+		<package name="com.puppy.witchcraft.game.model.mapper.store" />
 	</mappers>
+
 </configuration>
