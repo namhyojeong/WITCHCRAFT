@@ -27,10 +27,7 @@ public class WorkroomMenu extends JPanel {
 		/* 라벨에 배경이미지 삽입*/
 		JLabel background = new JLabel(new ImageIcon("images/background/bg_potion.png"));
 		background.setBounds(0, -15, 800, 580);
-
-		
-		
-		
+			
 		/* 손님 맞이하기 버튼 생성 */
 		JButton greetingsBtn = new JButton(new ImageIcon("images/select/potion_quest.png"));
 		greetingsBtn.setBounds(300, 120, 450, 100);
