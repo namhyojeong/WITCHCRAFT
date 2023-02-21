@@ -1,6 +1,10 @@
-package com.puppy.witchcraft.game.view;
+package com.puppy.witchcraft.game.view.pages;
+
+import static com.puppy.witchcraft.common.CommonConstants.changePanel;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -9,19 +13,22 @@ import javax.swing.JPanel;
 
 import com.puppy.witchcraft.common.CommonConstants;
 import com.puppy.witchcraft.common.MainFrame;
+import com.puppy.witchcraft.game.view.ForestMenu;
+import com.puppy.witchcraft.game.view.MainMap;
+
 
 public class WorkroomQuest extends JPanel {
 	
 	/* 전역변수에 계속 쓰일 프레임 및 패널 지정*/
 	private MainFrame mf;
-	private JPanel mainMap;
-
+	private WorkroomQuest wrQuest;
+	
 	/* 생성자 */
 	public WorkroomQuest(MainFrame mf) {
 		
 		/*현재 프레임 및 클래스 set*/
 		this.mf = mf;
-		this.mainMap = this;
+		this.wrQuest = this;
 		
 		/* 라벨에 배경이미지 삽입*/
 		JLabel background = new JLabel(new ImageIcon("images/background/bg_potion.png"));
@@ -43,7 +50,15 @@ public class WorkroomQuest extends JPanel {
 		JButton quitBtn = new JButton(new ImageIcon("images/ui/button_quit.png"));
 		quitBtn.setBounds(0, 450, 170, 70);
 		quitBtn.setContentAreaFilled(false);
-				
+		
+		/* 나가기 버튼 클릭 시 숲 선택화면으로 이동*/
+		quitBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changePanel(mf, wrQuest, new WorkroomMenu(mf));
+			}
+		});
+		
 		
 		
 		/* 컴포넌트들 넣을 패널 세팅 */

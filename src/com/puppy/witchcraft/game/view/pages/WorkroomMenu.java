@@ -1,4 +1,4 @@
-package com.puppy.witchcraft.game.view;
+package com.puppy.witchcraft.game.view.pages;
 
 import java.awt.Color;
 
@@ -14,14 +14,15 @@ public class WorkroomMenu extends JPanel {
 	
 	/* 전역변수에 계속 쓰일 프레임 및 패널 지정*/
 	private MainFrame mf;
-	private JPanel mainMap;
+	private WorkroomMenu wrMenu;
+	
 
 	/* 생성자 */
 	public WorkroomMenu(MainFrame mf) {
 		
 		/*현재 프레임 및 클래스 set*/
 		this.mf = mf;
-		this.mainMap = this;
+		this.wrMenu = this;
 		
 		/* 라벨에 배경이미지 삽입*/
 		JLabel background = new JLabel(new ImageIcon("images/background/bg_potion.png"));
