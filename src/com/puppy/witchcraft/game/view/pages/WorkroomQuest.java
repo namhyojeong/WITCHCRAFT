@@ -2,7 +2,6 @@ package com.puppy.witchcraft.game.view.pages;
 
 import static com.puppy.witchcraft.common.CommonConstants.changePanel;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,11 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.puppy.witchcraft.common.CommonConstants;
 import com.puppy.witchcraft.common.MainFrame;
-import com.puppy.witchcraft.game.view.ForestMenu;
-import com.puppy.witchcraft.game.view.MainMap;
-
+import com.puppy.witchcraft.game.view.WorkroomMenu;
 
 public class WorkroomQuest extends JPanel {
 	
@@ -58,8 +54,6 @@ public class WorkroomQuest extends JPanel {
 				changePanel(mf, wrQuest, new WorkroomMenu(mf));
 			}
 		});
-		
-		
 		
 		/* 컴포넌트들 넣을 패널 세팅 */
 		this.setLayout(null);

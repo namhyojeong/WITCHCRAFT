@@ -8,12 +8,12 @@ public class ItemDTO {
 	private String itemInfo;
 	private int itemSell;
 	private int itemBuy;
-	private String imageNo;	//이미지 테이블 참조
+	private int imageNo;	//이미지 테이블 참조
 	
 	public ItemDTO() {}
 
 	public ItemDTO(int itemNo, String itemType, String itemName, String itemInfo, int itemSell, int itemBuy,
-			String imageNo) {
+			int imageNo) {
 		super();
 		this.itemNo = itemNo;
 		this.itemType = itemType;
@@ -72,11 +72,11 @@ public class ItemDTO {
 		this.itemBuy = itemBuy;
 	}
 
-	public String getImageNo() {
+	public int getImageNo() {
 		return imageNo;
 	}
 
-	public void setImageNo(String imageNo) {
+	public void setImageNo(int imageNo) {
 		this.imageNo = imageNo;
 	}
 

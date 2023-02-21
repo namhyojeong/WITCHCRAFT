@@ -18,15 +18,15 @@ public class MainFrame extends JFrame {
 		this.setResizable(false);			//창 크기 변경 금지
 		this.setLocationRelativeTo(null);	//창 가운데에 나오도록
 		
-//		/* 초기 게임 시작화면 생성하면서 현재 설정된 프레임값과 함께 넘어감 */
-//		new GameMenu(this);
-//		
-//		/* 프레임창 아이콘 설정 */
-//		try {
-//			this.setIconImage(ImageIO.read(new File("images/ui/icon_frame.png")));
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		/* 초기 게임 시작화면 생성하면서 현재 설정된 프레임값과 함께 넘어감 */
+		new GameMenu(this);
+		
+		/* 프레임창 아이콘 설정 */
+		try {
+			this.setIconImage(ImageIO.read(new File("images/ui/icon_frame.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		this.setVisible(true);									//창이 보이도록
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//JFrame이 정상적으로 종료되게
