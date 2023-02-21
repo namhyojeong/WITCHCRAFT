@@ -6,22 +6,22 @@ public class ItemDTO {
 	private String itemType;
 	private String itemName;
 	private String itemInfo;
-	private int sellPrice;
-	private int buyPrice;
-	private String itemImageNo;	//이미지 테이블 참조
+	private int itemSell;
+	private int itemBuy;
+	private String imageNo;	//이미지 테이블 참조
 	
 	public ItemDTO() {}
 
-	public ItemDTO(int itemNo, String itemType, String itemName, String itemInfo, int sellPrice, int buyPrice,
-			String itemImageNo) {
+	public ItemDTO(int itemNo, String itemType, String itemName, String itemInfo, int itemSell, int itemBuy,
+			String imageNo) {
 		super();
 		this.itemNo = itemNo;
 		this.itemType = itemType;
 		this.itemName = itemName;
 		this.itemInfo = itemInfo;
-		this.sellPrice = sellPrice;
-		this.buyPrice = buyPrice;
-		this.itemImageNo = itemImageNo;
+		this.itemSell = itemSell;
+		this.itemBuy = itemBuy;
+		this.imageNo = imageNo;
 	}
 
 	public int getItemNo() {
@@ -56,35 +56,34 @@ public class ItemDTO {
 		this.itemInfo = itemInfo;
 	}
 
-	public int getSellPrice() {
-		return sellPrice;
+	public int getItemSell() {
+		return itemSell;
 	}
 
-	public void setSellPrice(int sellPrice) {
-		this.sellPrice = sellPrice;
+	public void setItemSell(int itemSell) {
+		this.itemSell = itemSell;
 	}
 
-	public int getBuyPrice() {
-		return buyPrice;
+	public int getItemBuy() {
+		return itemBuy;
 	}
 
-	public void setBuyPrice(int buyPrice) {
-		this.buyPrice = buyPrice;
+	public void setItemBuy(int itemBuy) {
+		this.itemBuy = itemBuy;
 	}
 
-	public String getItemImageNo() {
-		return itemImageNo;
+	public String getImageNo() {
+		return imageNo;
 	}
 
-	public void setItemImageNo(String itemImageNo) {
-		this.itemImageNo = itemImageNo;
+	public void setImageNo(String imageNo) {
+		this.imageNo = imageNo;
 	}
 
 	@Override
 	public String toString() {
 		return "ItemDTO [itemNo=" + itemNo + ", itemType=" + itemType + ", itemName=" + itemName + ", itemInfo="
-				+ itemInfo + ", sellPrice=" + sellPrice + ", buyPrice=" + buyPrice + ", itemImageNo=" + itemImageNo
-				+ "]";
+				+ itemInfo + ", itemSell=" + itemSell + ", itemBuy=" + itemBuy + ", imageNo=" + imageNo + "]";
 	}
 	
 }
