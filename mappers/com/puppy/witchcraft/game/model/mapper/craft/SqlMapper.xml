@@ -2,5 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.puppy.witchcraft.game.model.mapper.craft.SqlMapper">
 
+<resultMap id="itemResultMap" type="com.puppy.witchcraft.game.model.dto.ItemDTO">
+	<id property="itemNo" column="ITEM_NO"/>
+	<result property="itemType" column="ITEM_TYPE"/>
+	<result property="itemName" column="ITEM_NAME"/>
+	<result property="itemInfo" column="ITEM_INFO"/>
+	<result property="itemSell" column="ITEM_SELL"/>
+	<result property="itemBuy" column="ITEM_BUY"/>
+	<result property="imageNo" column="IMAGE_NO"/>
+</resultMap>
+
+<resultMap id="imageResultMap" type="com.puppy.witchcraft.game.model.dto.ImageDTO">
+	<id property="imageNo" column="IMAGE_NO"/>
+	<result property="imageSave" column="IMAGE_SAVE"/>
+	<result property="imageName" column="IMAGE_NAME"/>
+	<result property="imageType" column="IMAGE_TYPE"/>
+</resultMap>
+
+<resultMap id="itemInvenResultMap" type="com.puppy.witchcraft.game.model.dto.MyInven">
+	<id property="itemNo" column="ITEM_NO"/>
+	<result property="itemCount" column="ITEMCOUNT"/>
+	<result property="imageNo" column="IMAGE_NO"/>
+</resultMap>
+
+<select id="myItemInven" resultMap="itemInvenResultMap" parameterType="_int">
+	SELECT
+	       A.ITEM_NO
+         , COUNT(*) as ITEMCOUNT
+         , A.IMAGE_NO
+ 	  FROM ITEM A
+  	  JOIN ITEM_INVEN B ON(A.ITEM_NO = B.ITEM_NO)
+  	 WHERE B.P_NO = 1
+     GROUP BY A.ITEM_NO, A.IMAGE_NO
+     HAVING COUNT(*) > 0
+</select>
+
+<select id="imageUrl" resultMap="imageResultMap" parameterType="_int">
+	SELECT
+		   I.IMAGE_NO
+		 , I.IMAGE_SAVE
+		 , I.IMAGE_NAME
+		 , I.IMAGE_TYPE
+	  FROM IMAGE I
+	 WHERE IMAGE_NO = #{ imageNo }
+</select>
+
 
 </mapper>
