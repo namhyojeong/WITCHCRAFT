@@ -7,8 +7,8 @@ import javax.swing.JLabel;
 
 import com.puppy.witchcraft.game.model.dto.ImageDTO;
 import com.puppy.witchcraft.game.model.dto.ItemDTO;
-import com.puppy.witchcraft.game.model.dto.MyInven;
 import com.puppy.witchcraft.game.model.dto.PlayerDTO;
+import com.puppy.witchcraft.game.model.dto.MyItemInven;
 import com.puppy.witchcraft.game.model.service.StorePageService;
 
 public class StorePageController {
@@ -57,15 +57,15 @@ public class StorePageController {
 
 	}
 
-	public List<MyInven> inven(PlayerDTO pp) {
+	public List<MyItemInven> myItemInven(PlayerDTO pp) {
 
 		int playerNo = pp.getPlayerNo();
+		
+		List<MyItemInven> itemList = new ArrayList<>();
 
-		List<MyInven> ivenitemList = new ArrayList<>();
+		itemList = storePageService.myItemInven(playerNo);
 
-		ivenitemList = storePageService.inven(playerNo);
-
-		return ivenitemList;
+		return itemList;
 	}
 
 
@@ -83,6 +83,8 @@ public class StorePageController {
 
 	}
 }
+
+
 
 
 

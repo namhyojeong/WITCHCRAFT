@@ -2,6 +2,7 @@ package com.puppy.witchcraft.game.model.service;
 
 import static com.puppy.witchcraft.common.Template.getSqlSession;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.puppy.witchcraft.game.model.dto.ImageDTO;
 import com.puppy.witchcraft.game.model.dto.ItemDTO;
-import com.puppy.witchcraft.game.model.dto.MyInven;
+import com.puppy.witchcraft.game.model.dto.MyItemInven;
 import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.model.mapper.store.SqlMapper;
 
@@ -81,17 +82,7 @@ public class StorePageService {
 		return result;
 	}
 
-	public List<MyInven> inven(int playerNo) {
-		
-		SqlSession sqlSession = getSqlSession();
-		mapper = sqlSession.getMapper(SqlMapper.class);
-		
-		List<MyInven> ivenitemList = mapper.myItemInven(playerNo);
-		
-		sqlSession.close();
-		
-		return ivenitemList;
-	}
+
 
 	public int playerGoldChange(JLabel playerGold, PlayerDTO pp) {
 		
@@ -112,6 +103,20 @@ public class StorePageService {
 		sqlSession.close();
 
 		return result;
+	}
+
+	public List<MyItemInven> myItemInven(int playerNo) {
+		
+		SqlSession sqlSession = getSqlSession();
+		mapper = sqlSession.getMapper(SqlMapper.class);
+		
+		List<MyItemInven> itemList = new ArrayList<>();
+		
+		itemList = mapper.myItemInven(playerNo);
+		
+		sqlSession.close();
+		
+		return itemList;
 	}
 }
 

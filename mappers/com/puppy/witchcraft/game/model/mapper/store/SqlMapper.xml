@@ -27,7 +27,7 @@
 	<result property="playerGold" column="PLAYER_GOLD"/>
 	</resultMap>
 
-	<resultMap id="itemInvenResultMap" type="com.puppy.witchcraft.game.model.dto.MyInven">
+	<resultMap id="itemInvenResultMap" type="com.puppy.witchcraft.game.model.dto.MyItemInven">
 	<id property="itemNo" column="ITEM_NO"/>
 	<result property="itemCount" column="ITEMCOUNT"/>
 	<result property="imageNo" column="IMAGE_NO"/>
