@@ -4,33 +4,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.puppy.witchcraft.game.model.dto.ImageDTO;
-import com.puppy.witchcraft.game.model.dto.MyInven;
+import com.puppy.witchcraft.game.model.dto.MyItemInven;
 import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.model.service.SelectItemInvenService;
 
 public class SelectItemInvenController {
-	
+
 	SelectItemInvenService selectItemInvenService = new SelectItemInvenService();
 
-	public List<MyInven> inven(PlayerDTO pp) {
+	public SelectItemInvenController() {}
+
+	public List<MyItemInven> myItemInven(PlayerDTO pp) {
 
 		int playerNo = pp.getPlayerNo();
-
-		List<MyInven> itemList = new ArrayList<>();
-
-		itemList = selectItemInvenService.test(playerNo);
 		
+		List<MyItemInven> itemList = new ArrayList<>();
+
+		itemList = selectItemInvenService.myItemInven(playerNo);
+
 		return itemList;
 	}
 
-	public String imageUrl(int imageNo) {
-		
+	public String itemImage(MyItemInven item) {
 
-		ImageDTO image = selectItemInvenService.imageUrl(imageNo);
-		
-		String imageUrl = image.getImageSave();
-		
-		return imageUrl;
+		ImageDTO image = selectItemInvenService.imageSource(item.getImageNo());
+
+		String source = image.getImageSave();
+
+		return source;
 	}
 
 }

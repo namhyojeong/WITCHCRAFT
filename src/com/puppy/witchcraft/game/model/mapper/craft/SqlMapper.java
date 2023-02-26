@@ -3,12 +3,13 @@ package com.puppy.witchcraft.game.model.mapper.craft;
 import java.util.List;
 
 import com.puppy.witchcraft.game.model.dto.ImageDTO;
-import com.puppy.witchcraft.game.model.dto.MyInven;
+import com.puppy.witchcraft.game.model.dto.MyItemInven;
+import com.puppy.witchcraft.game.model.dto.RecipeDTO;
 
 public interface SqlMapper {
 	
-	List<MyInven> myItemInven(int playerNo);
+	List<MyItemInven> myItemInven(int playerNo);
 
-	ImageDTO imageUrl(int imageNo);
+	ImageDTO selectItemImage(int imageNo);
 
 }
