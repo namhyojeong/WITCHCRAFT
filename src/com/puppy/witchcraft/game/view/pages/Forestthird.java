@@ -8,9 +8,13 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.puppy.witchcraft.common.MainFrame;
+import com.puppy.witchcraft.game.controller.Forest1Controller;
+import com.puppy.witchcraft.game.model.dto.ItemDTO;
+import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.view.ForestMenu;
 
 public class Forestthird extends JPanel{
@@ -21,6 +25,9 @@ public class Forestthird extends JPanel{
 
 	public Forestthird(MainFrame mf) {
 
+		PlayerDTO pp = new PlayerDTO();
+		pp.setPlayerNo(1);
+		
 		/*현재 프레임 및 클래스 set*/
 		this.mf = mf;
 		this.forestthird = this;
@@ -37,15 +44,45 @@ public class Forestthird extends JPanel{
 		JButton forestgoBtn = new JButton(new ImageIcon("images/select/forest/forest3-touch1.png"));
 		forestgoBtn.setBounds(190, 410, 115, 95);
 		forestgoBtn.setContentAreaFilled(false);
+		forestgoBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Forest1Controller foresttst1Controller = new Forest1Controller();
+				ItemDTO item = foresttst1Controller.selectforestitem();
+				JOptionPane.showMessageDialog(null,"재료가 채집되었습니다.");
+				foresttst1Controller.insertforestitem(item, pp);
+			}
+		});
 
 		JButton forestgoBtn1 = new JButton(new ImageIcon("images/select/forest/forest3-touch2.png"));
 		forestgoBtn1.setBounds(500, 275, 115, 95);
 		forestgoBtn1.setContentAreaFilled(false);
+		forestgoBtn1.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Forest1Controller foresttst1Controller = new Forest1Controller();
+				ItemDTO item = foresttst1Controller.selectforestitem();
+				JOptionPane.showMessageDialog(null,"재료가 채집되었습니다.");
+				foresttst1Controller.insertforestitem(item, pp);
+			}
+		});
+		
 		JButton forestgoBtn2 = new JButton(new ImageIcon("images/select/forest/forest3-touch3.png"));
 		forestgoBtn2.setBounds(540, 60, 115, 95);
 		forestgoBtn2.setContentAreaFilled(false);
+		forestgoBtn2.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Forest1Controller foresttst1Controller = new Forest1Controller();
+				ItemDTO item = foresttst1Controller.selectforestitem();
+				JOptionPane.showMessageDialog(null,"재료가 채집되었습니다.");
+				foresttst1Controller.insertforestitem(item, pp);
+			}
+		});
+		
 		JButton invenBtn = new JButton(new ImageIcon("images/ui/ui_inventory.png"));
 		invenBtn.setBounds(620, 460, 70, 70);
 		invenBtn.setContentAreaFilled(false);
