@@ -2,5 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.puppy.witchcraft.game.model.mapper.forest.SqlMapper">
 
-
+	<resultMap type="com.puppy.witchcraft.game.model.dto.ItemDTO" id="ForestItemDTO">
+		<id property="itemNo" column="ITEM_NO"/>
+		<result property="itemType" column="ITEM_TYPE"/>
+		<result property="itemName" column="ITEM_NAME"/>
+		<result property="itemInfo" column="ITEM_INFO"/>
+		<result property="itemSell" column="ITEM_SELL"/>
+		<result property="itemBuy" column="ITEM_BUY"/>
+		<result property="imageNo" column="IMAGE_NO"/>
+	</resultMap>	
+	
+		<select id="rnditem" resultMap="ForestItemDTO" parameterType = "_int">
+		SELECT
+			ITEM_NO
+		  , ITEM_TYPE
+		  , ITEM_NAME
+		  , ITEM_INFO
+		  , ITEM_SELL
+		  , ITEM_BUY
+		  , IMAGE_NO
+		FROM ITEM
+		WHERE ITEM_NO = #{ itemNo }
+		</select>
+		
+		<insert id="insertforestitem" parameterType = "HashMap">
+		INSERT 
+		INTO ITEM_INVEN
+		 (
+			INVEN_NO,
+			P_NO,
+			ITEM_NO
+		 )
+		 VALUES
+		 (
+		 	SEQ_ITEM_INVEN_NO.NEXTVAL,
+		 	#{ playerNo },
+		 	#{ itemNo }
+		 )
+		</insert>
 </mapper>
