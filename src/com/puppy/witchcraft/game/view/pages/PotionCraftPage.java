@@ -7,8 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -16,12 +16,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
 
 import com.puppy.witchcraft.common.MainFrame;
 import com.puppy.witchcraft.game.controller.SelectItemInvenController;
-import com.puppy.witchcraft.game.model.dto.ItemDTO;
-import com.puppy.witchcraft.game.model.dto.MyInven;
+import com.puppy.witchcraft.game.model.dto.MyItemInven;
 import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.view.WorkroomMenu;
 
@@ -30,13 +28,29 @@ public class PotionCraftPage extends JPanel{
 	/* 전역변수에 계속 쓰일 프레임 및 패널 지정*/
 	private MainFrame mf;
 	private JPanel potionCraftPage;
-	private ItemDTO itemDTO;
+	private PlayerDTO player = new PlayerDTO();
+	private List<MyItemInven> clickItemList = new ArrayList<>();
+	private List<JButton> putList = new ArrayList<>();
+	private List<JLabel> count = new ArrayList<>();
+	private List<MyItemInven> itemList = new ArrayList<>();
+	private int putIndex = 0;
 
+	Craft craft = new Craft();
+	SelectItemInvenController selectItemInvenController = new SelectItemInvenController();
+	
 	public PotionCraftPage(MainFrame mf) {
+
 
 		/*현재 프레임 및 클래스 set*/
 		this.mf = mf;
 		this.potionCraftPage = this;
+
+		//테스트
+		player.setPlayerNo(1);
+
+		/* 컴포넌트들 넣을 패널 세팅 */
+		this.setLayout(null);
+		this.setBounds(0, 0, 800, 580);
 
 		/* 라벨에 배경이미지 삽입*/
 		JLabel background = new JLabel(new ImageIcon("images/background/bg_potion_crafting.png"));
@@ -70,58 +84,58 @@ public class PotionCraftPage extends JPanel{
 
 		//기본 ui 세팅 끝
 
-		/* 가마솥 버튼 이미지로 생성 */
-		JButton touchCaldronBtn = new JButton(new ImageIcon("images/ui/caldron.png"));
-		touchCaldronBtn.setBounds(115, 230, 220, 250);
-		touchCaldronBtn.setContentAreaFilled(false);
-		touchCaldronBtn.setLayout(null);
-		touchCaldronBtn.setBorder(null);
-		touchCaldronBtn.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				touchCaldronBtn.setBorder(null);
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				touchCaldronBtn.setBorder(new LineBorder(Color.GREEN, 3));
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-		});
-		
-		/* 가마솥 위에 글자 추가 */
-		JLabel touch = new JLabel("T O U C H");
-		touch.setFont(new Font("Sans Serif", Font.BOLD, 25));
-		touch.setForeground(Color.WHITE);
-		touch.setBounds(55, 130, 120, 50);
-		
-		touchCaldronBtn.add(touch);
-
-		/* 선택된 재료전시대 이미지 생성 */
-		JLabel putUp = new JLabel(new ImageIcon("images/ui/select_item.png"));
-		putUp.setBounds(85, 125, 280, 70);
-
 		/* 제작 설명 */
 		JLabel info = new JLabel("재료를 다 넣은 후 숱을 눌러 제작해주세요!");
 		info.setBounds(120, 105, 220, 12);
 		info.setFont(new Font("Sans Serif", Font.PLAIN, 11));
 		info.setForeground(Color.WHITE);
+
+		/* 가마솥 위에 글자 추가 */
+		JLabel touch = new JLabel("T O U C H");
+		touch.setFont(new Font("Sans Serif", Font.BOLD, 25));
+		touch.setForeground(Color.WHITE);
+		touch.setBounds(55, 130, 120, 50);
+
+		/* 선택된 재료전시대 이미지 생성 */
+		JLabel putUp = new JLabel(new ImageIcon("images/ui/select_item.png"));
+		putUp.setBounds(85, 125, 280, 70);
+		putUp.setLayout(null);
+
+		/* 클릭된 아이템 보일 공간 패널로 생성 */
+		JPanel putPanel = new JPanel();
+		putPanel.setBounds(75, 130, 300, 60);
+		putPanel.setBackground(new Color(255, 0, 0, 0));
+		putPanel.setLayout(new GridLayout(1, 5, 0, 0));
+
+		for(int i = 0; i < 5; i++) {
+			putList.add(new JButton());
+			putList.get(i).setLayout(null);
+			putList.get(i).setSize(60, 60);
+			putList.get(i).setBorder(null);
+			putList.get(i).setVisible(false);
+
+			count.add(new JLabel("1"));
+			count.get(i).setBounds(50, 45, 10, 15);
+			count.get(i).setFont(new Font("Sans Serif", Font.BOLD, 18));
+			putList.get(i).add(count.get(i));
+
+			putPanel.add(putList.get(i));
+		}
+
+		/* 가마솥 버튼 이미지로 생성 */
+		JButton touchCaldronBtn = new JButton(new ImageIcon("images/ui/caldron.png"));
+		touchCaldronBtn.setBounds(115, 230, 220, 250);
+		touchCaldronBtn.setContentAreaFilled(false);
+		touchCaldronBtn.setLayout(null);
+		touchCaldronBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				revalidate();
+				repaint();
+				putIndex = craft.resetCraft(clickItemList, putList);
+			}
+		});
 
 		/* 인벤토리 이미지 생성 */
 		JLabel invenBg = new JLabel(new ImageIcon("images/ui/inventory_item.png"));
@@ -139,58 +153,86 @@ public class PotionCraftPage extends JPanel{
 		invenPanel.setBackground(new Color(255, 0, 0, 0));
 		invenPanel.setLayout(new GridLayout(4, 4, 9, 5));
 
-		/* 재료가 있는 만큼 인벤토리 내에 조회하도록 컨트롤러 요청 */
-		SelectItemInvenController selectItemInvenController = new SelectItemInvenController();
-		
-		/* 임시플레이어 설정 */
-		PlayerDTO pp = new PlayerDTO();
-		pp.setPlayerNo(1);
-		
-		/*인벤에 해당 플레이어의 인벤토리 데이터 담기*/
-		List<MyInven> itemList = selectItemInvenController.inven(pp);
+		/* 플레이어 인벤토리 조회 컨트롤러 */
+		itemList = selectItemInvenController.myItemInven(player);
+
+		/* 인벤토리 칸 생성 및 클릭 시 요청 */
+		List<JButton> blank = new ArrayList<>();
 
 		for(int i = 0; i < 16; i++) {
-			JButton blank = new JButton();
-			blank.setName("blank"+i);
-			blank.setLayout(null);
-			blank.setSize(63, 63);
-			blank.setBackground(Color.DARK_GRAY);
-			blank.setBorder(null);
-			invenPanel.add(blank);
+			blank.add(new JButton());
+			blank.get(i).setLayout(null);
+			blank.get(i).setSize(63, 63);
+			blank.get(i).setBackground(Color.DARK_GRAY);
+			blank.get(i).setBorder(null);
+			invenPanel.add(blank.get(i));
 
 			if(i < itemList.size()) {
-				
-				blank.setText(itemList.get(i).getItemNo()+"");
-				blank.setName(itemList.get(i).getItemNo()+"");
-				blank.setForeground(Color.WHITE);
-				
-				blank.addActionListener(new ActionListener() {
-					
+
+				int index = i;
+
+				blank.get(i).addActionListener(new ActionListener() {
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						System.out.println("재료번호 " + blank.getName() + "번 재료를 클릭함");
+
+						revalidate();
+						repaint();
+
+						int clickCount = Collections.frequency(clickItemList, itemList.get(index)) + 1;
+
+						boolean hasItem = clickItemList.contains(itemList.get(index));
+
+						if(putIndex < 5 && hasItem == false) {	//처음 넣을 때
+
+							/* 제작대에 클릭한 아이템 올리기 */
+							clickItemList.add(itemList.get(index));
+
+							/* 제작대에 클릭한 아이템이 보이도록 컨트롤러 요청 */
+							putList.get(putIndex).setVisible(true);
+							putList.get(putIndex).setIcon(new ImageIcon(selectItemInvenController.itemImage(itemList.get(index))));
+							putList.get(putIndex).setHorizontalTextPosition(SwingConstants.CENTER);
+
+							/* 제작대 위 아이템 개수 변경 */
+							count.get(putIndex).setText(clickCount + "");
+
+							putIndex++;
+
+						} else if(hasItem == true && clickCount <= itemList.get(index).getItemCount()) {
+
+							/* 제작대에 클릭한 아이템 올리기 */
+							clickItemList.add(itemList.get(index));
+
+							/* 제작대 개수 변경 */
+							count.get(putIndex - 1).setText(clickCount + "");
+							
+						} else {
+							System.out.println("제작대 초과, 초기화 필요");
+						}
+						System.out.println(clickItemList);
 					}
+
 				});
-				
+
 				/*버튼에 해당 재료 이미지 설정*/
-				String imageUrl = selectItemInvenController.imageUrl(itemList.get(i).getImageNo());
-				blank.setIcon(new ImageIcon(imageUrl));
-				blank.setHorizontalTextPosition(SwingConstants.CENTER);
+				String imageUrl = selectItemInvenController.itemImage(itemList.get(i));
+				blank.get(i).setIcon(new ImageIcon(imageUrl));
+				blank.get(i).setHorizontalTextPosition(SwingConstants.CENTER);
 
 				JLabel count = new JLabel(itemList.get(i).getItemCount()+"개");
 				count.setBounds(43, 43, 20, 20);
 				count.setForeground(Color.WHITE);
-				blank.add(count);
+				blank.get(i).add(count);
+
 			} else {
-				blank.setVisible(false);
+				blank.get(i).setVisible(false);
 			}
 		}
-
-		/* 컴포넌트들 넣을 패널 세팅 */
-		this.setLayout(null);
-		this.setBounds(0, 0, 800, 580);
-
+		
 		/* 컴포넌트 세팅 */
+
+		touchCaldronBtn.add(touch);
+
 		invenBg.add(invenPanel);
 		invenBg.add(alignBtn);
 
@@ -200,11 +242,12 @@ public class PotionCraftPage extends JPanel{
 		this.add(invenBtn);
 		this.add(recipeBtn);
 		this.add(info);
+		this.add(putPanel);
 		this.add(putUp);
 		this.add(touchCaldronBtn);
 
 		this.add(background);
-		
+
 		/* 프레임에 패널 올리기*/
 		mf.add(this);
 

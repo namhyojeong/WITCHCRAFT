@@ -1,14 +1,14 @@
 package com.puppy.witchcraft.game.model.dto;
 
-public class MyInven {
+public class MyItemInven {
 	
 	private int itemNo;
 	private int itemCount;
 	private int imageNo;
 	
-	public MyInven() {}
+	public MyItemInven() {}
 
-	public MyInven(int itemNo, int itemCount, int imageNo) {
+	public MyItemInven(int itemNo, int itemCount, int imageNo) {
 		super();
 		this.itemNo = itemNo;
 		this.itemCount = itemCount;
@@ -41,9 +41,7 @@ public class MyInven {
 
 	@Override
 	public String toString() {
-		return "TestInven [itemNo=" + itemNo + ", itemCount=" + itemCount + ", imageNo=" + imageNo + "]";
+		return "MyInven [itemNo=" + itemNo + ", itemCount=" + itemCount + ", imageNo=" + imageNo + "]";
 	}
 
-
-	
 }
