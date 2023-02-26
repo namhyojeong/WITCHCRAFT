@@ -43,6 +43,17 @@ public class Forestsecond extends JPanel{
 		forestgoBtn.setContentAreaFilled(false);
 		forestgoBtn.setBorderPainted(false);
 		
+		forestgoBtn.addActionListener(new ActionListener() {
+			
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Forest1Controller foresttst1Controller = new Forest1Controller();
+			ItemDTO item = foresttst1Controller.selectforestitem();
+			JOptionPane.showMessageDialog(null,"재료가 채집되었습니다.");
+			foresttst1Controller.insertforestitem(item, pp);
+		}
+	});
+
 		JButton forestgoBtn1 = new JButton(new ImageIcon("images/select/forest/forest2-touch2.png"));
 		forestgoBtn1.setBounds(420, 300, 115, 95);
 		forestgoBtn1.setContentAreaFilled(false);
