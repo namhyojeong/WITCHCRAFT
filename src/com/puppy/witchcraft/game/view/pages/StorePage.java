@@ -18,7 +18,7 @@ import javax.swing.SwingConstants;
 import com.puppy.witchcraft.common.MainFrame;
 import com.puppy.witchcraft.game.controller.StorePageController;
 import com.puppy.witchcraft.game.model.dto.ItemDTO;
-import com.puppy.witchcraft.game.model.dto.MyInven;
+import com.puppy.witchcraft.game.model.dto.MyItemInven;
 import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.view.StoreMenu;
 
@@ -102,7 +102,7 @@ public class StorePage extends JPanel {
 		playerGold.setForeground(Color.WHITE);
 		
 		/*인벤에 해당 플레이어의 인벤토리 데이터 담기*/
-		List<MyInven> ivenitemList = storePageController.inven(pp);
+		List<MyItemInven> ivenitemList = storePageController.myItemInven(pp);
 
 		for(int i = 0; i < 16; i++) {
 			JButton blank = new JButton();
