@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.puppy.witchcraft.common.MainFrame;
+import com.puppy.witchcraft.game.view.pages.ItemInvenDialog;
+import com.puppy.witchcraft.game.view.pages.RecipeDialog;
 import com.puppy.witchcraft.game.view.pages.SavePage;
 
 public class MainMap extends JPanel {
@@ -46,11 +48,25 @@ public class MainMap extends JPanel {
 		JButton invenBtn = new JButton(new ImageIcon("images/ui/ui_inventory.png"));
 		invenBtn.setBounds(620, 460, 70, 70);
 		invenBtn.setContentAreaFilled(false);
+		invenBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ItemInvenDialog(mf);
+			}
+		});
 		
 		/* 레시피도감 버튼 이미지로 생성 */
 		JButton recipeBtn = new JButton(new ImageIcon("images/ui/ui_recipe.png"));
 		recipeBtn.setBounds(710, 460, 70, 70);
 		recipeBtn.setContentAreaFilled(false);
+		recipeBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new RecipeDialog(mf);
+			}
+		});
 		
 		/* 포션가게(작업실)로 가는 버튼 이미지로 생성 */
 		JButton potionBtn = new JButton(new ImageIcon("images/ui/button_potion.png"));

@@ -34,7 +34,7 @@ public class SelectItemInvenService {
 		SqlSession sqlSession = getSqlSession();
 		mapper = sqlSession.getMapper(SqlMapper.class);
 		
-		ImageDTO image = mapper.selectItemImage(imageNo);
+		ImageDTO image = mapper.selectImage(imageNo);
 		
 		sqlSession.close();
 		
