@@ -2,13 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.puppy.witchcraft.game.model.mapper.craft.SqlMapper">
 
-<resultMap id="imageResultMap" type="com.puppy.witchcraft.game.model.dto.ImageDTO">
-	<id property="imageNo" column="IMAGE_NO"/>
-	<result property="imageSave" column="IMAGE_SAVE"/>
-	<result property="imageName" column="IMAGE_NAME"/>
-	<result property="imageType" column="IMAGE_TYPE"/>
-</resultMap>
-
 <resultMap id="itemInvenResultMap" type="com.puppy.witchcraft.game.model.dto.MyItemInven">
 	<id property="itemNo" column="ITEM_NO"/>
 	<result property="itemCount" column="ITEMCOUNT"/>
@@ -27,15 +20,88 @@
      HAVING COUNT(*) > 0
 </select>
 
-<select id="selectItemImage" resultMap="imageResultMap" parameterType="_int">
+<resultMap id="imageResultMap" type="com.puppy.witchcraft.game.model.dto.ImageDTO">
+	<id property="imageNo" column="IMAGE_NO"/>
+	<result property="imageSave" column="IMAGE_SAVE"/>
+	<result property="imageName" column="IMAGE_NAME"/>
+	<result property="imageType" column="IMAGE_TYPE"/>
+</resultMap>
+
+<select id="selectImage" resultMap="imageResultMap" parameterType="_int">
 	SELECT
 		   I.IMAGE_NO
 		 , I.IMAGE_SAVE
 		 , I.IMAGE_NAME
 		 , I.IMAGE_TYPE
 	  FROM IMAGE I
-      JOIN ITEM A ON (I.IMAGE_NO = A.IMAGE_NO)
-	 WHERE A.ITEM_NO = #{ itemNo }
+	 WHERE IMAGE_NO = #{ imageNo }
+</select>
+
+<resultMap id="recipeAndPotionResultMap" type="com.puppy.witchcraft.game.model.dto.RecipeAndPotion">
+	<id property="recipeNo" column="RECIPE_NO"/>
+	<id property="potionNo" column="POTION_NO"/>
+	<collection property="itemList" ofType="com.puppy.witchcraft.game.model.dto.ItemDTO">
+		<id property="itemNo" column="ITEM_NO"/>
+		<result property="itemType" column="ITEM_TYPE"/>
+		<result property="itemName" column="ITEM_NAME"/>
+		<result property="itemInfo" column="ITEM_INFO"/>
+		<result property="itemSell" column="ITEM_SELL"/>
+		<result property="itemBuy" column="ITEM_BUY"/>
+		<result property="imageNo" column="IMAGE_NO"/>
+	</collection>
+</resultMap>
+
+<select id="selectAllRecipe" resultMap="recipeAndPotionResultMap">
+	SELECT
+	       R.RECIPE_NO
+	     , R.POTION_NO
+	     , I.ITEM_NO
+	     , I.ITEM_TYPE
+	     , I.ITEM_NAME
+	     , I.ITEM_INFO
+	     , I.ITEM_SELL
+	     , I.ITEM_BUY
+	     , I.IMAGE_NO
+	 FROM RECIPE R
+	 LEFT JOIN ITEM I ON (R.ITEM_NO = I.ITEM_NO)
+	ORDER BY R.RECIPE_NO
+</select>
+
+<resultMap id="recipeResultMap" type="com.puppy.witchcraft.game.model.dto.RecipeDTO">
+	<id property="recipeNo" column="RECIPE_NO"/>
+	<id property="potionNo" column="POTION_NO"/>
+	<id property="itemCount" column="ITEM_COUNT"/>
+	<id property="itemNo" column="ITEM_NO"/>
+</resultMap>
+
+<select id="selectRecipe" resultMap="recipeResultMap" parameterType="_int">
+	SELECT
+	       R.RECIPE_NO
+	     , R.POTION_NO
+	     , R.ITEM_COUNT
+	     , R.ITEM_NO
+	 FROM RECIPE R
+	 WHERE R.RECIPE_NO = #{ recipeNo }
+	 ORDER BY R.RECIPE_NO
+</select>
+
+<resultMap id="potionResultMap" type="com.puppy.witchcraft.game.model.dto.PotionDTO" >
+	<id property="potionNo" column="POTION_NO"/>
+	<result property="potionName" column="POTION_NAME"/>
+	<result property="potionSell" column="POTION_SELL"/>
+	<result property="potionInfo" column="POTION_INFO"/>
+	<result property="imageNo" column="IMAGE_NO"/>
+</resultMap>
+
+<select id="selectPotion" resultMap="potionResultMap" parameterType="_int">
+	SELECT
+	       P.POTION_NO
+	     , P.POTION_NAME
+	     , P.POTION_SELL
+	     , P.POTION_INFO
+	     , P.IMAGE_NO
+	  FROM POTION P
+	 WHERE P.POTION_NO = #{ potionNo }
 </select>
 
 </mapper>

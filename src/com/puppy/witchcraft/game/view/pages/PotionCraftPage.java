@@ -70,17 +70,24 @@ public class PotionCraftPage extends JPanel{
 			}
 		});
 
-		/* 인벤토리 버튼 이미지로 생성 */
-		JButton invenBtn = new JButton(new ImageIcon("images/ui/ui_inventory.png"));
-		invenBtn.setBounds(620, 460, 70, 70);
-		invenBtn.setContentAreaFilled(false);
-		invenBtn.setBorder(null);
+//		/* 인벤토리 버튼 이미지로 생성 */
+//		JButton invenBtn = new JButton(new ImageIcon("images/ui/ui_inventory.png"));
+//		invenBtn.setBounds(620, 460, 70, 70);
+//		invenBtn.setContentAreaFilled(false);
+//		invenBtn.setBorder(null);
 
 		/* 레시피도감 버튼 이미지로 생성 */
 		JButton recipeBtn = new JButton(new ImageIcon("images/ui/ui_recipe.png"));
 		recipeBtn.setBounds(710, 460, 70, 70);
 		recipeBtn.setContentAreaFilled(false);
 		recipeBtn.setBorder(null);
+		recipeBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new RecipeDialog(mf);
+			}
+		});
 
 		//기본 ui 세팅 끝
 
@@ -239,7 +246,7 @@ public class PotionCraftPage extends JPanel{
 		/* 패널에 컴포넌트들 삽입 */
 		this.add(invenBg);
 		this.add(quitBtn);
-		this.add(invenBtn);
+//		this.add(invenBtn);
 		this.add(recipeBtn);
 		this.add(info);
 		this.add(putPanel);
