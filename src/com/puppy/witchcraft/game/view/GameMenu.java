@@ -15,7 +15,7 @@ import static com.puppy.witchcraft.common.CommonConstants.setButtonColor;
 
 import com.puppy.witchcraft.common.MainFrame;
 import com.puppy.witchcraft.game.view.pages.LoginPage;
-import com.puppy.witchcraft.game.view.pages.SigninPage;
+import com.puppy.witchcraft.game.view.pages.SignUpPage;
 
 public class GameMenu extends JPanel {
 
@@ -57,15 +57,15 @@ public class GameMenu extends JPanel {
 		});
 
 		/* 회원가입 버튼 생성 */
-		JButton signinBtn = new JButton("Sign in");
-		signinBtn.setBounds(305, 365, 190, 55);
-		setButtonColor(signinBtn, NAVYCOLOR, Color.WHITE);
+		JButton signupBtn = new JButton("Sign up");
+		signupBtn.setBounds(305, 365, 190, 55);
+		setButtonColor(signupBtn, NAVYCOLOR, Color.WHITE);
 
 		/* 회원가입 버튼 클릭 시 회원가입화면 패널로 변경*/
-		signinBtn.addActionListener(new ActionListener() {
+		signupBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, gameMenu, new SigninPage(mf));
+				changePanel(mf, gameMenu, new SignUpPage(mf));
 			}
 		});
 
@@ -89,7 +89,7 @@ public class GameMenu extends JPanel {
 		/* 패널에 컴포넌트들 삽입 */
 		this.add(logo);
 		
-		this.add(signinBtn);
+		this.add(signupBtn);
 		this.add(loginBtn);
 		this.add(quitBtn);
 		
