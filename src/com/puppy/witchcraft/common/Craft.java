@@ -1,4 +1,4 @@
-package com.puppy.witchcraft.game.view.pages;
+package com.puppy.witchcraft.common;
 
 import java.util.List;
 

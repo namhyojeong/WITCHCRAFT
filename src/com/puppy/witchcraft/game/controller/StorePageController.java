@@ -1,15 +1,17 @@
 package com.puppy.witchcraft.game.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JLabel;
 
 import com.puppy.witchcraft.game.model.dto.ImageDTO;
 import com.puppy.witchcraft.game.model.dto.ItemDTO;
 import com.puppy.witchcraft.game.model.dto.ItemInvenDTO;
-import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.model.dto.MyItemInven;
+import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.model.service.StorePageService;
 
 public class StorePageController {
@@ -35,18 +37,9 @@ public class StorePageController {
 		return imageUrl;
 	}
 
-	//	public PlayerDTO buyItem(PlayerDTO playerNo, ItemDTO itemNo) {
-	//
-	//		PlayerDTO pp = new PlayerDTO();
-	//		
-	//		pp = storePageService.playerGoldChange(playerNo, itemNo);
-	//		
-	//		return pp;
-	//	}
+	public void insertstoreitem(ItemDTO item, PlayerDTO player) {
 
-	public void insertstoreitem(ItemDTO item, PlayerDTO pp) {
-
-		int result = storePageService.insertstoreitem(item, pp);
+		int result = storePageService.insertstoreitem(item, player);
 
 		if(result > 0) {
 			System.out.println("성공");
@@ -55,9 +48,9 @@ public class StorePageController {
 		}
 	}
 
-	public List<MyItemInven> myItemInven(PlayerDTO pp) {
+	public List<MyItemInven> myItemInven(PlayerDTO player) {
 
-		int playerNo = pp.getPlayerNo();
+		int playerNo = player.getPlayerNo();
 
 		List<MyItemInven> itemList = new ArrayList<>();
 
@@ -66,36 +59,42 @@ public class StorePageController {
 		return itemList;
 	}
 
-
-	public void playerGoldChange(JLabel playerGold, PlayerDTO pp) {
-
-		int result = storePageService.playerGoldChange(playerGold, pp);
-
-		if(result > 0) {
-			System.out.println("성공");
+	public void deleteSellItem(PlayerDTO player, int itemNo) {
+		
+		Map<String, Integer> delete = new HashMap<>();
+		delete.put("playerNo", player.getPlayerNo());
+		delete.put("itemNo", itemNo);
+		
+		boolean result = storePageService.deleteSellItem(delete);
+		
+		if(result) {
+			System.out.println("삭제 성공");
 		} else {
-			System.out.println("실패");
+			System.out.println("삭제 실패");
+		}
+	}
+	
+	public void updatePlayerGold(PlayerDTO player, int playerGold) {
+		
+		Map<String, Integer> gold = new HashMap<>();
+		gold.put("playerNo", player.getPlayerNo());
+		gold.put("playerGold", playerGold);
+
+		boolean result = storePageService.updatePlayerGold(gold);
+
+		if(result) {
+			System.out.println("골드 변경 성공");
+		} else {
+			System.out.println("골드 변경 실패");
 		}
 	}
 
-	public List<ItemInvenDTO> sellItem(ItemInvenDTO itemInvenDTO) {
-
-		List<ItemInvenDTO> invenItemList = new ArrayList<>();
-
-		invenItemList = storePageService.sellItem(itemInvenDTO);
-
-		return invenItemList;	
+	public ItemDTO selectItem(int itemNo) {
+		
+		ItemDTO item = storePageService.selectItem(itemNo);
+		
+		return item;
 	}
-
-	public void deleteStoreItem(int invenNo) {
-
-		int result = storePageService.deleteStoreItem(invenNo);
-
-		if(result > 0) {
-			System.out.println("성공");
-		} else {
-			System.out.println("실패");
-		}
-	}
+	
 }	
 

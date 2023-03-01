@@ -11,21 +11,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.puppy.witchcraft.common.MainFrame;
+import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.view.pages.PotionCraftPage;
 import com.puppy.witchcraft.game.view.pages.WorkroomQuest;
 
 public class WorkroomMenu extends JPanel {
 	
 	/* 전역변수에 계속 쓰일 프레임 및 패널 지정*/
-	private MainFrame mf;
 	private WorkroomMenu wrMenu;
-	
 
 	/* 생성자 */
-	public WorkroomMenu(MainFrame mf) {
+	public WorkroomMenu(MainFrame mf, PlayerDTO player) {
 		
 		/*현재 프레임 및 클래스 set*/
-		this.mf = mf;
 		this.wrMenu = this;
 		
 		/* 라벨에 배경이미지 삽입*/
@@ -40,7 +38,7 @@ public class WorkroomMenu extends JPanel {
 		greetingsBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, wrMenu, new WorkroomQuest(mf));
+				changePanel(mf, wrMenu, new WorkroomQuest(mf, player));
 			}
 		});
 		
@@ -52,7 +50,7 @@ public class WorkroomMenu extends JPanel {
 		potioncraftBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, wrMenu, new PotionCraftPage(mf));
+				changePanel(mf, wrMenu, new PotionCraftPage(mf, player));
 			}
 		});
 		
@@ -64,7 +62,7 @@ public class WorkroomMenu extends JPanel {
 		quitBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, wrMenu, new MainMap(mf));
+				changePanel(mf, wrMenu, new MainMap(mf, player));
 			}
 		});
 		

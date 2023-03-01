@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import com.puppy.witchcraft.common.Craft;
 import com.puppy.witchcraft.common.MainFrame;
 import com.puppy.witchcraft.game.controller.PotionMakerController;
 import com.puppy.witchcraft.game.controller.SelectItemInvenController;
@@ -32,9 +33,7 @@ import com.puppy.witchcraft.game.view.WorkroomMenu;
 public class PotionCraftPage extends JPanel{
 
 	/* 전역변수에 계속 쓰일 프레임 및 패널 지정*/
-	private MainFrame mf;
 	private JPanel potionCraftPage;
-	private PlayerDTO player = new PlayerDTO();
 	private List<MyItemInven> clickItemList = new ArrayList<>();
 	private List<JButton> putList = new ArrayList<>();
 	private List<JLabel> count = new ArrayList<>();
@@ -43,18 +42,14 @@ public class PotionCraftPage extends JPanel{
 
 	Craft craft = new Craft();
 
-	public PotionCraftPage(MainFrame mf) {
+	public PotionCraftPage(MainFrame mf, PlayerDTO player) {
 
 		SelectItemInvenController selectItemInvenController = new SelectItemInvenController();
 		SelectRecipeController selectRecipeController = new SelectRecipeController();
 		PotionMakerController pmController = new PotionMakerController();
 
 		/*현재 프레임 및 클래스 set*/
-		this.mf = mf;
 		this.potionCraftPage = this;
-
-		//테스트
-		player.setPlayerNo(1);
 
 		/* 컴포넌트들 넣을 패널 세팅 */
 		this.setLayout(null);
@@ -74,7 +69,7 @@ public class PotionCraftPage extends JPanel{
 		quitBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, potionCraftPage, new WorkroomMenu(mf));
+				changePanel(mf, potionCraftPage, new WorkroomMenu(mf, player));
 			}
 		});
 
@@ -133,7 +128,6 @@ public class PotionCraftPage extends JPanel{
 		//모든 레시피
 		List<RecipeAndPotion> recipeAllList = selectRecipeController.selectAllRecipe();
 
-
 		/* 가마솥 버튼 이미지로 생성 */
 		JButton touchCaldronBtn = new JButton(new ImageIcon("images/ui/caldron.png"));
 		touchCaldronBtn.setBounds(115, 230, 220, 250);
@@ -170,9 +164,16 @@ public class PotionCraftPage extends JPanel{
 						recipeItemNoList.add(recipe.get(j).getItemNo());
 					}
 
-					if(recipeItemNoList.containsAll(clickRecipeItemList)) {
-
-						potion = pmController.selectPotion(recipe.get(k).getPotionNo()); 
+					if(clickRecipeItemList.containsAll(recipeItemNoList) && recipeItemNoList.containsAll(clickRecipeItemList)) {
+						
+						System.out.println("===============================================");
+						System.out.println("===============================================");
+						System.out.println(recipeItemNoList);
+						System.out.println(clickRecipeItemList);
+						System.out.println("===============================================");
+						System.out.println("===============================================");
+						
+						potion = pmController.selectPotion(recipe.get(k).getPotionNo());
 						isPotionGet = pmController.insertPotionInven(player, potion.getPotionNo());
 						result = true;
 						break;
@@ -188,12 +189,14 @@ public class PotionCraftPage extends JPanel{
 						pmController.deleteUseItem(player, itemNo);
 					}
 					// 패널 새로 고침
-					changePanel(mf, potionCraftPage, new PotionCraftPage(mf));
+					changePanel(mf, potionCraftPage, new PotionCraftPage(mf, player));
+					new PotionInvenDialog(mf, player);
 
-				} if(result && !isPotionGet) {
-					JOptionPane.showMessageDialog(null, "제작 가능한 포션이 있지만 제작에 실패하였습니다.\n다시 시도해주세요.");
+				} else {
+					JOptionPane.showMessageDialog(null, "제작 가능한 포션이 없습니다.");
 				}
 
+				clickRecipeItemList.clear();
 				revalidate();
 				repaint();
 				putIndex = craft.resetCraft(clickItemList, putList);

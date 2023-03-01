@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import com.puppy.witchcraft.common.CommonConstants;
 import com.puppy.witchcraft.common.MainFrame;
+import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.view.MainMap;
 
 public class SavePage extends JPanel{
@@ -22,18 +23,13 @@ public class SavePage extends JPanel{
 	private Color MAINCOLOR = CommonConstants.MAINCOLOR;
 	private Color NAVYCOLOR = CommonConstants.NAVYCOLOR;
 
-	/* 버튼 내 텍스트크기때문에 폰트 설정 */
-	private Font font = new Font("Inter", Font.BOLD, 18);
-
 	/* 전역변수에 계속 쓰일 프레임 및 패널 지정*/
-	private MainFrame mf;
 	private JPanel savePage;
 
 	/* 생성자 */
-	public SavePage(MainFrame mf) {
+	public SavePage(MainFrame mf, PlayerDTO player) {
 		
 		/*현재 프레임 및 클래스, 패널 set*/
-		this.mf = mf;
 		this.savePage = this;
 		this.setLayout(null);
 		this.setBounds(0, 0, 800, 580);
@@ -49,7 +45,7 @@ public class SavePage extends JPanel{
 		saveBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, savePage, new MainMap(mf));
+				changePanel(mf, savePage, new MainMap(mf, player));
 			}
 		});
 		

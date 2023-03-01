@@ -19,30 +19,20 @@ import com.puppy.witchcraft.game.view.ForestMenu;
 
 public class Forestsecond extends JPanel{
 
-	private MainFrame mf;
 	private Forestsecond forestsecond;
 
-	public Forestsecond(MainFrame mf) {
-
-		PlayerDTO pp = new PlayerDTO();
-		pp.setPlayerNo(1);
+	public Forestsecond(MainFrame mf, PlayerDTO player) {
 		/*현재 프레임 및 클래스 set*/
-		this.mf = mf;
 		this.forestsecond = this;
 
 		/* 라벨에 배경이미지 삽입*/
 		JLabel background = new JLabel(new ImageIcon("images/background/bg_forest02.png"));
 		background.setBounds(0, -15, 800, 580);
 
-		/* 라벨에 타이틀로고 삽입 */
-		JLabel logo = new JLabel(new ImageIcon("images/ui/title_logo"));
-		logo.setBounds(180, 90, 440, 160);
-
 		JButton forestgoBtn = new JButton(new ImageIcon("images/select/forest/forest2-touch1.png"));
 		forestgoBtn.setBounds(80, 280, 115, 95);
 		forestgoBtn.setContentAreaFilled(false);
 		forestgoBtn.setBorderPainted(false);
-		
 		forestgoBtn.addActionListener(new ActionListener() {
 			
 		@Override
@@ -50,7 +40,7 @@ public class Forestsecond extends JPanel{
 			Forest1Controller foresttst1Controller = new Forest1Controller();
 			ItemDTO item = foresttst1Controller.selectforestitem();
 			JOptionPane.showMessageDialog(null,"재료가 채집되었습니다.");
-			foresttst1Controller.insertforestitem(item, pp);
+			foresttst1Controller.insertforestitem(item, player);
 		}
 	});
 
@@ -58,7 +48,6 @@ public class Forestsecond extends JPanel{
 		forestgoBtn1.setBounds(420, 300, 115, 95);
 		forestgoBtn1.setContentAreaFilled(false);
 		forestgoBtn1.setBorderPainted(false);
-		
 		forestgoBtn1.addActionListener(new ActionListener() {
 
 			@Override
@@ -66,13 +55,14 @@ public class Forestsecond extends JPanel{
 				Forest1Controller foresttst1Controller = new Forest1Controller();
 				ItemDTO item = foresttst1Controller.selectforestitem();
 				JOptionPane.showMessageDialog(null,"재료가 채집되었습니다.");
-				foresttst1Controller.insertforestitem(item, pp);
+				foresttst1Controller.insertforestitem(item, player);
 			}
 		});
 
 		JButton forestgoBtn2 = new JButton(new ImageIcon("images/select/forest/forest2-touch3.png"));
 		forestgoBtn2.setBounds(500, 65, 115, 95);
 		forestgoBtn2.setContentAreaFilled(false);
+		forestgoBtn2.setBorder(null);
 		forestgoBtn2.setBorderPainted(false);
 		forestgoBtn2.addActionListener(new ActionListener() {
 
@@ -81,7 +71,7 @@ public class Forestsecond extends JPanel{
 				Forest1Controller foresttst1Controller = new Forest1Controller();
 				ItemDTO item = foresttst1Controller.selectforestitem();
 				JOptionPane.showMessageDialog(null,"재료가 채집되었습니다.");
-				foresttst1Controller.insertforestitem(item, pp);
+				foresttst1Controller.insertforestitem(item, player);
 			}
 		});
 		
@@ -89,11 +79,26 @@ public class Forestsecond extends JPanel{
 		invenBtn.setBounds(620, 460, 70, 70);
 		invenBtn.setContentAreaFilled(false);
 		invenBtn.setBorderPainted(false);
+		invenBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ItemInvenDialog(mf, player);
+				new PotionInvenDialog(mf, player);
+			}
+		});
 		
 		JButton recipeBtn = new JButton(new ImageIcon("images/ui/ui_recipe.png"));
 		recipeBtn.setBounds(710, 460, 70, 70);
 		recipeBtn.setContentAreaFilled(false);
 		recipeBtn.setBorderPainted(false);
+		recipeBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new RecipeDialog(mf);
+			}
+		});
 		
 		JButton forestexit = new JButton(new ImageIcon("images/ui/button_quit.png"));
 		forestexit.setBounds(0, 460, 170, 70);
@@ -105,7 +110,7 @@ public class Forestsecond extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				changePanel(mf, forestsecond , new ForestMenu(mf));
+				changePanel(mf, forestsecond , new ForestMenu(mf, player));
 			}
 		});
 
@@ -114,8 +119,6 @@ public class Forestsecond extends JPanel{
 		this.setBounds(0, 0, 800, 580);
 
 		/* 패널에 컴포넌트들 삽입 */
-		this.add(logo);
-
 		this.add(forestgoBtn);
 		this.add(forestgoBtn1);
 		this.add(forestgoBtn2);

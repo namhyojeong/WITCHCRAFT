@@ -12,8 +12,6 @@ public class SelectItemInvenController {
 
 	SelectItemInvenService selectItemInvenService = new SelectItemInvenService();
 
-	public SelectItemInvenController() {}
-
 	public List<MyItemInven> myItemInven(PlayerDTO pp) {
 
 		int playerNo = pp.getPlayerNo();

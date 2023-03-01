@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.puppy.witchcraft.game.model.mapper.store.SqlMapper">
 
-	<resultMap type="com.puppy.witchcraft.game.model.dto.ItemDTO" id="StorePageItemDTO" >
+	<resultMap id="itemResultMap" type="com.puppy.witchcraft.game.model.dto.ItemDTO">
 		<id property="itemNo" column="ITEM_NO"/>
 		<result property="itemType" column="ITEM_TYPE"/>
 		<result property="itemName" column="ITEM_NAME"/>
@@ -19,48 +19,43 @@
 	<result property="imageType" column="IMAGE_TYPE"/>
 	</resultMap>
 
-	<resultMap id="playerResultMap" type="com.puppy.witchcraft.game.model.dto.PlayerDTO">
-	<id property="playerNo" column="PLAYER_NO"/>
-	<result property="playerId" column="PLAYER_ID"/>
-	<result property="playerPwd" column="PLAYER_PWD"/>
-	<result property="playerNickname" column="PLAYER_NICKNAME"/>
-	<result property="playerGold" column="PLAYER_GOLD"/>
-	</resultMap>
-
 	<resultMap id="itemInvenResultMap" type="com.puppy.witchcraft.game.model.dto.MyItemInven">
 	<id property="itemNo" column="ITEM_NO"/>
 	<result property="itemCount" column="ITEMCOUNT"/>
 	<result property="imageNo" column="IMAGE_NO"/>
 	</resultMap>
 	
-   <resultMap id="selectItemInvenResultMap" type="com.puppy.witchcraft.game.model.dto.ItemInvenDTO">
-	<id property="invenNo" column="INVEN_NO"/>
-	<result property="playerNo" column="P_NO"/>
-	<result property="itemNo" column="ITEM_NO"/>
-	</resultMap>
-
-	<select id="sellItem" resultMap="selectItemInvenResultMap" parameterType="com.puppy.witchcraft.game.model.dto.ItemInvenDTO" >
-	delete from item_inven
-	where inven_no = 
-	(
-	select p.inven_no
-       	   from 
-       	   (
-              	  select rownum r, v.*
-                  from (
-                     	 select *
-                     	 from item_inven
-                         where item_no = #{ itemNo }
-                           and p_no = #{ playerNo }
-                         order by inven_no
-                  ) v
-               
-           )p
-WHERE p.R = 1
-)
+	<select id="selectItem" resultMap="itemResultMap" parameterType="_int">
+		SELECT
+		    A.ITEM_NO
+		  , A.ITEM_TYPE
+		  , A.ITEM_NAME
+		  , A.ITEM_INFO
+		  , A.ITEM_SELL
+		  , A.ITEM_BUY
+		  , A.IMAGE_NO
+	    FROM ITEM A
+	   WHERE A.ITEM_NO = #{ itemNo }
+	</select>
 	
-
-	</select> 
+	<delete id="deleteSellItem" parameterType="HashMap">
+		DELETE FROM ITEM_INVEN I2
+		 WHERE I2.INVEN_NO = (
+				     	   SELECT P.INVEN_NO
+      					   FROM (
+              				 	 SELECT ROWNUM R, V.*
+             			           FROM (
+                   						 SELECT *
+                     				       FROM ITEM_INVEN I
+                                          WHERE I.P_NO = #{ playerNo }
+                                            AND I.ITEM_NO = #{ itemNo }
+                                          ORDER BY I.INVEN_NO
+              							 ) v
+               
+      						    )P
+                          WHERE P.R = 1
+                        )
+	</delete>
 
 	<select id="myItemInven" resultMap="itemInvenResultMap" parameterType="_int">
 	SELECT
@@ -72,9 +67,9 @@ WHERE p.R = 1
   	 WHERE B.P_NO = 1
      GROUP BY A.ITEM_NO, A.IMAGE_NO
      HAVING COUNT(*) > 0
-</select>
+	</select>
 
-	<select id="storeList" resultMap="StorePageItemDTO">
+	<select id="storeList" resultMap="itemResultMap">
 		SELECT
 		    A.ITEM_NO
 		  , A.ITEM_TYPE
@@ -98,15 +93,14 @@ WHERE p.R = 1
 	 
 	</select>
 
-    <update id="playerGoldChange" parameterType="com.puppy.witchcraft.game.model.dto.PlayerDTO">
+    <update id="updatePlayerGold" parameterType="HashMap">
 	UPDATE
-	       PLAYER P
+	       PLAYER
 	   SET
-	       P.PLAYER_GOLD = #{ playerGold }
-	 WHERE P.P_NO = #{ playerNo }
-	  
+	  	   P_GOLD = #{ playerGold }
+	 WHERE P_NO = #{ playerNo }
+
 	</update>
-	
 	
 	<insert id="insertstoreitem" parameterType="hashmap">
       INSERT 

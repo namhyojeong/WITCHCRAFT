@@ -25,14 +25,12 @@ public class GameMenu extends JPanel {
 	private Color GRAYCOLOR = CommonConstants.GRAYCOLOR;
 
 	/* 전역변수에 계속 쓰일 프레임 및 패널 지정*/
-	private MainFrame mf;
 	private JPanel gameMenu;
 
 	/* 생성자 */
 	public GameMenu(MainFrame mf) {
 		
 		/*현재 프레임 및 클래스 set*/
-		this.mf = mf;
 		this.gameMenu = this;
 
 		/* 라벨에 배경이미지 삽입*/
@@ -52,7 +50,7 @@ public class GameMenu extends JPanel {
 		loginBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, gameMenu, new LoginPage(mf)); //test
+				changePanel(mf, gameMenu, new LoginPage(mf));
 			}
 		});
 

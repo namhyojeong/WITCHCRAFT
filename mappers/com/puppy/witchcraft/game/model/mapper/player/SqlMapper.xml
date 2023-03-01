@@ -17,7 +17,80 @@
    , #{ nickname }
    , 0
    )
-  
 </insert>
+
+<resultMap id="playerResultMap" type="com.puppy.witchcraft.game.model.dto.PlayerDTO" >
+	<id property="playerNo" column="P_NO"/>
+	<result property="playerId" column="P_ID"/>
+	<result property="playerPwd" column="P_PWD"/>
+	<result property="playerNickname" column="P_NICKNAME"/>
+	<result property="playerGold" column="P_GOLD"/>
+	
+</resultMap>
+
+<select id="selectPlayer" resultMap="playerResultMap" parameterType="HashMap">
+	SELECT
+	       P_NO
+	     , P_ID
+	     , P_PWD
+	     , P_NICKNAME
+	     , P_GOLD
+	  FROM PLAYER
+	 WHERE P_ID = #{ playerId }
+	   AND P_PWD = #{ playerPwd }
+</select>
+
+<resultMap id="potionInvenResultMap" type="com.puppy.witchcraft.game.model.dto.MyPotionInven">
+	<id property="potionNo" column="POTION_NO"/>
+	<result property="potionCount" column="POTIONCOUNT"/>
+	<result property="imageNo" column="IMAGE_NO"/>
+</resultMap>
+
+<select id="myPotionInven" resultMap="potionInvenResultMap" parameterType="_int">
+	SELECT
+	       A.POTION_NO
+         , COUNT(*) as POTIONCOUNT
+         , A.IMAGE_NO
+ 	  FROM POTION A
+  	  JOIN POTION_INVEN B ON(A.POTION_NO = B.POTION_NO)
+  	 WHERE B.P_NO = 1
+     GROUP BY A.POTION_NO, A.IMAGE_NO
+     HAVING COUNT(*) > 0
+</select>
+
+<resultMap id="itemInvenResultMap" type="com.puppy.witchcraft.game.model.dto.MyItemInven">
+	<id property="itemNo" column="ITEM_NO"/>
+	<result property="itemCount" column="ITEMCOUNT"/>
+	<result property="imageNo" column="IMAGE_NO"/>
+</resultMap>
+
+<select id="myItemInven" resultMap="itemInvenResultMap" parameterType="_int">
+	SELECT
+	       A.ITEM_NO
+         , COUNT(*) as ITEMCOUNT
+         , A.IMAGE_NO
+ 	  FROM ITEM A
+  	  JOIN ITEM_INVEN B ON(A.ITEM_NO = B.ITEM_NO)
+  	 WHERE B.P_NO = 1
+     GROUP BY A.ITEM_NO, A.IMAGE_NO
+     HAVING COUNT(*) > 0
+</select>
+
+<resultMap id="imageResultMap" type="com.puppy.witchcraft.game.model.dto.ImageDTO">
+	<id property="imageNo" column="IMAGE_NO"/>
+	<result property="imageSave" column="IMAGE_SAVE"/>
+	<result property="imageName" column="IMAGE_NAME"/>
+	<result property="imageType" column="IMAGE_TYPE"/>
+</resultMap>
+
+<select id="selectImage" resultMap="imageResultMap" parameterType="_int">
+	SELECT
+		   I.IMAGE_NO
+		 , I.IMAGE_SAVE
+		 , I.IMAGE_NAME
+		 , I.IMAGE_TYPE
+	  FROM IMAGE I
+	 WHERE IMAGE_NO = #{ imageNo }
+</select>
 
 </mapper>

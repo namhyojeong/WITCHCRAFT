@@ -14,21 +14,33 @@ public class PlayerService {
 	private static SqlMapper mapper;
 
 	public int insertplayer(Map<String, String> player) {
+		
 		SqlSession sqlSession = getSqlSession();
 		mapper = sqlSession.getMapper(SqlMapper.class);
 
 		int result = mapper.insertplayer(player);
 
 		if(result > 0 ) {
-
 			sqlSession.commit();
 
 		}else {
-
 			sqlSession.rollback();
 		}
+		
 		sqlSession.close();
+		
 		return result;
+	}
 
+	public PlayerDTO getPlayer(Map<String, String> player) {
+		
+		SqlSession sqlSession = getSqlSession();
+		mapper = sqlSession.getMapper(SqlMapper.class);
+
+		PlayerDTO playerUpdate = mapper.selectPlayer(player);
+
+		sqlSession.close();
+		
+		return playerUpdate;
 	}
 }
