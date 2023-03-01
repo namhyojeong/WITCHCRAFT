@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 import com.puppy.witchcraft.common.MainFrame;
 import com.puppy.witchcraft.game.controller.StorePageController;
 import com.puppy.witchcraft.game.model.dto.ItemDTO;
+import com.puppy.witchcraft.game.model.dto.ItemInvenDTO;
 import com.puppy.witchcraft.game.model.dto.MyItemInven;
 import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.view.StoreMenu;
@@ -28,8 +29,10 @@ public class StorePage extends JPanel {
 	private JPanel storePage;
 	private ItemDTO itemDTO;
 	private PlayerDTO playerDTO;
+	private ItemInvenDTO itemInvenDTO;
+	private int itemindex;
 
-	public StorePage(MainFrame mf) {
+	public StorePage(MainFrame mf, PlayerDTO player) {
 
 		/* 현재 프레임 및 클래스 set */
 		this.mf = mf;
@@ -75,7 +78,6 @@ public class StorePage extends JPanel {
 			}
 		});
 
-
 		/* 라벨에 상점재료목록 이미지 삽입 */
 		JLabel list = new JLabel(new ImageIcon("images/ui/store_list.png"));
 		list.setBounds(40, 105, 300, 90);
@@ -90,21 +92,15 @@ public class StorePage extends JPanel {
 		/* 재료가 있는 만큼 상점 내에 조회하도록 컨트롤러 요청 */
 		StorePageController storePageController = new StorePageController();
 
-		/* 임시플레이어 설정 */
-		PlayerDTO pp = new PlayerDTO();
-		pp.setPlayerNo(1);
-		
-		pp.setPlayerGold(1000); 
-		
 		/* 라벨에 플레이어 골드 생성 */
-		JLabel playerGold = new JLabel(pp.getPlayerGold()+"");
+		JLabel playerGold = new JLabel();
 		playerGold.setBounds(660, 450, 110, 25);
 		playerGold.setForeground(Color.WHITE);
 		
 		/*인벤에 해당 플레이어의 인벤토리 데이터 담기*/
-		List<MyItemInven> ivenitemList = storePageController.myItemInven(pp);
-
-		for(int i = 0; i < 16; i++) {
+		List<MyItemInven> ivenItemList = storePageController.myItemInven(player);
+		int i = 0;
+		for(i = 0; i < 16; i++) {
 			JButton blank = new JButton();
 			blank.setName("blank"+i);
 			blank.setLayout(null);
@@ -113,28 +109,37 @@ public class StorePage extends JPanel {
 			blank.setBorder(null);
 			invenPanel.add(blank);
 
-			if(i < ivenitemList.size()) {
+			if(i < ivenItemList.size()) {
+				itemindex = ivenItemList.get(i).getItemNo();
 				
-				blank.setText(ivenitemList.get(i).getItemNo()+"");
-				blank.setName(ivenitemList.get(i).getItemNo()+"");
+				blank.setText(ivenItemList.get(i).getItemNo()+"");
+				blank.setName(ivenItemList.get(i).getItemNo()+"");
 				blank.setForeground(Color.WHITE);
 				
 				blank.addActionListener(new ActionListener() {
 					
+					
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						JOptionPane.showMessageDialog(null,"재료가 판매되었습니다.");
-						System.out.println("재료번호 " + blank.getName() + "번 재료를 클릭함");
+						ItemInvenDTO itemInven = new ItemInvenDTO();
+						itemInven.setItemNo(Integer.parseInt(blank.getText()));
+						itemInven.setPlayerNo(player.getPlayerNo());
+		
+						List<ItemInvenDTO> invenItemList = storePageController.sellItem(itemInven);
+//						int invenNo = invenItemList.get(itemindex).getInvenNo();
+						changePanel(mf, storePage, new StorePage(mf, player));
 					}
 				});
 				
 				
 				/*버튼에 해당 재료 이미지 설정*/
-				String imageUrl = storePageController.imageUrl(ivenitemList.get(i).getImageNo());
+				String imageUrl = storePageController.imageUrl(ivenItemList.get(i).getImageNo());
 				blank.setIcon(new ImageIcon(imageUrl));
 				blank.setHorizontalTextPosition(SwingConstants.CENTER);
 
-				JLabel count = new JLabel(ivenitemList.get(i).getItemCount()+"개");
+				JLabel count = new JLabel(ivenItemList.get(i).getItemCount()+"개");
 				count.setBounds(43, 43, 20, 20);
 				count.setForeground(Color.WHITE);
 				blank.add(count);
@@ -143,35 +148,37 @@ public class StorePage extends JPanel {
 			}
 		}
 
+		
 		/*재료 리스트에 올리기 */
 		List<ItemDTO> itemList = storePageController.item();
-
-		for(int i = 0; i < 3; i++) {
+		
+		for(int j = 0; j < 3; j++) {
 			JButton blank = new JButton(); 
+			int index = j;
 			blank.addActionListener(new ActionListener() {
-
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					JOptionPane.showMessageDialog(null,"재료가 구매되었습니다.");
-//					storePageController.insertstoreitem(itemList.get(i), pp);
-//					storePageController.playerGoldChange(playerGold, pp);
-//					playerGold.setText(pp.getPlayerGold());
+					storePageController.insertstoreitem(itemList.get(index), player);
+					storePageController.playerGoldChange(playerGold, player);
+					playerGold.setText(player.getPlayerGold()+"");
+					changePanel(mf, storePage, new StorePage(mf, player));
 				}
 			});
 
 			/* 아이템 이름 넣기 */
-			JLabel itemName = new JLabel(itemList.get(i).getItemName()+"");
+			JLabel itemName = new JLabel(itemList.get(j).getItemName()+"");
 			itemName.setBounds(80, 10, 214, 17);
 			blank.add(itemName);
 			itemName.setForeground(Color.WHITE);
 
 			/* 아이템 이미지 넣기 */
-			JLabel imageUrl = new JLabel(new ImageIcon(storePageController.imageUrl(itemList.get(i).getImageNo())));
+			JLabel imageUrl = new JLabel(new ImageIcon(storePageController.imageUrl(itemList.get(j).getImageNo())));
 			imageUrl.setBounds(10, 10, 64, 64);
 			blank.add(imageUrl);
 
 			/* 아이템 설명 넣기 */
-			JLabel itemInfo = new JLabel(itemList.get(i).getItemInfo()+"");
+			JLabel itemInfo = new JLabel(itemList.get(j).getItemInfo()+"");
 			itemInfo.setBounds(80, 20, 214, 51);
 			blank.add(itemInfo);
 			itemInfo.setForeground(Color.WHITE);
@@ -182,13 +189,13 @@ public class StorePage extends JPanel {
 			blank.add(goldImage);
 
 			/* 아이템 가격 넣기 */
-			JLabel goldPrice = new JLabel(itemList.get(i).getItemBuy()+"G");
+			JLabel goldPrice = new JLabel(itemList.get(j).getItemBuy()+"G");
 			goldPrice.setBounds(260, 65, 50, 10);
 			blank.add(goldPrice);
 			goldPrice.setForeground(Color.WHITE);
 
 
-			blank.setName(itemList.get(i).getItemNo()+"");
+			blank.setName(itemList.get(j).getItemNo()+"");
 			blank.setLayout(null);
 			blank.setSize(302, 93);
 			blank.setBackground(Color.DARK_GRAY);
@@ -220,4 +227,5 @@ public class StorePage extends JPanel {
 		mf.getLayeredPane().setLayer(background, 0);
 
 	}
-}
+
+	}

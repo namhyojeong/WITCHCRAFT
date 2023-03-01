@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.puppy.witchcraft.game.model.dto.ImageDTO;
 import com.puppy.witchcraft.game.model.dto.ItemDTO;
+import com.puppy.witchcraft.game.model.dto.ItemInvenDTO;
 import com.puppy.witchcraft.game.model.dto.MyItemInven;
 import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 
@@ -22,6 +23,8 @@ public interface SqlMapper {
 
 	List<MyItemInven> myItemInven(int playerNo);
 
-	
+	int deleteStoreItem(int invenNo);
+
+	List<ItemInvenDTO> sellItem(ItemInvenDTO itemInvenDTO);
 
 }

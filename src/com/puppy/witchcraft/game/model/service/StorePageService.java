@@ -13,6 +13,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.puppy.witchcraft.game.model.dto.ImageDTO;
 import com.puppy.witchcraft.game.model.dto.ItemDTO;
+import com.puppy.witchcraft.game.model.dto.ItemInvenDTO;
 import com.puppy.witchcraft.game.model.dto.MyItemInven;
 import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.model.mapper.store.SqlMapper;
@@ -62,7 +63,7 @@ public class StorePageService {
 	}
 
 	public int insertstoreitem(ItemDTO item, PlayerDTO pp) {
-		
+
 		SqlSession sqlSession = getSqlSession();
 		mapper = sqlSession.getMapper(SqlMapper.class);
 
@@ -85,10 +86,10 @@ public class StorePageService {
 
 
 	public int playerGoldChange(JLabel playerGold, PlayerDTO pp) {
-		
+
 		SqlSession sqlSession = getSqlSession();
 		mapper = sqlSession.getMapper(SqlMapper.class);
-		
+
 		Map<String, Integer> gold = new HashMap<>();
 		gold.put("playerNo", pp.getPlayerNo());
 		gold.put("playerGold", pp.getPlayerGold());
@@ -106,32 +107,50 @@ public class StorePageService {
 	}
 
 	public List<MyItemInven> myItemInven(int playerNo) {
-		
+
 		SqlSession sqlSession = getSqlSession();
 		mapper = sqlSession.getMapper(SqlMapper.class);
-		
+
 		List<MyItemInven> itemList = new ArrayList<>();
-		
+
 		itemList = mapper.myItemInven(playerNo);
-		
+
 		sqlSession.close();
-		
+
 		return itemList;
 	}
+
+
+	public List<ItemInvenDTO> sellItem(ItemInvenDTO itemInvenDTO) {
+
+		SqlSession sqlSession = getSqlSession();
+		mapper = sqlSession.getMapper(SqlMapper.class);
+
+		List<ItemInvenDTO> invenItemList = new ArrayList<>();
+
+		invenItemList = mapper.sellItem(itemInvenDTO);
+
+		sqlSession.close();
+
+		return invenItemList;
+
+	}
+
+	public int deleteStoreItem(int invenNo) {
+
+		SqlSession sqlSession = getSqlSession();
+		mapper = sqlSession.getMapper(SqlMapper.class);
+
+		int result = mapper.deleteStoreItem(invenNo);
+
+		if(result > 0) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
+		sqlSession.close();
+
+		return result;
+	}
+
 }
-
-//	public PlayerDTO playerGoldChange(PlayerDTO playerNo, ItemDTO itemNo) {
-//		
-//		SqlSession sqlSession = getSqlSession();
-//		mapper = sqlSession.getMapper(SqlMapper.class);
-//		
-//		PlayerDTO pp = mapper.playerGoldChange(playerNo, itemNo);
-//		
-//		sqlSession.close();
-//		
-//		return pp;
-//	}
-
-
-
-
