@@ -22,21 +22,6 @@ public class StorePageService {
 
 	private static SqlMapper mapper;
 
-	//	public StorePageService(StorePageMapper storePageMapper) {
-	//		this.mapper = storePageMapper;
-	//	}
-
-	//	public List<Map<String, Object>> selectItemList() {
-	// 
-	//		SqlSession sqlSession = getSqlSession();
-	//		mapper = sqlSession.getMapper(StorePageMapper.class);
-	//		List<Map<String, Object>> itemList = mapper.selectItemList(sqlSession);
-	//		
-	//		sqlSession.close();
-	//		
-	//		return itemList;
-	//	}
-
 	public static List<ItemDTO> test() {
 
 		SqlSession sqlSession = getSqlSession();
@@ -83,29 +68,6 @@ public class StorePageService {
 		return result;
 	}
 
-
-
-	public int playerGoldChange(JLabel playerGold, PlayerDTO pp) {
-
-		SqlSession sqlSession = getSqlSession();
-		mapper = sqlSession.getMapper(SqlMapper.class);
-
-		Map<String, Integer> gold = new HashMap<>();
-		gold.put("playerNo", pp.getPlayerNo());
-		gold.put("playerGold", pp.getPlayerGold());
-
-		int result = mapper.playerGoldChange(gold);
-
-		if(result > 0) {
-			sqlSession.commit();
-		} else {
-			sqlSession.rollback();
-		}
-		sqlSession.close();
-
-		return result;
-	}
-
 	public List<MyItemInven> myItemInven(int playerNo) {
 
 		SqlSession sqlSession = getSqlSession();
@@ -120,37 +82,51 @@ public class StorePageService {
 		return itemList;
 	}
 
-
-	public List<ItemInvenDTO> sellItem(ItemInvenDTO itemInvenDTO) {
-
+	public boolean deleteSellItem(Map<String, Integer> delete) {
+		
 		SqlSession sqlSession = getSqlSession();
 		mapper = sqlSession.getMapper(SqlMapper.class);
-
-		List<ItemInvenDTO> invenItemList = new ArrayList<>();
-
-		invenItemList = mapper.sellItem(itemInvenDTO);
-
+		
+		int result = mapper.deleteSellItem(delete);
+		
+		if(result > 0) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
+		
 		sqlSession.close();
-
-		return invenItemList;
-
+		
+		return result > 0? true: false;
 	}
+	
 
-	public int deleteStoreItem(int invenNo) {
+	public boolean updatePlayerGold(Map<String, Integer> gold) {
 
 		SqlSession sqlSession = getSqlSession();
 		mapper = sqlSession.getMapper(SqlMapper.class);
 
-		int result = mapper.deleteStoreItem(invenNo);
+		int result = mapper.updatePlayerGold(gold);
 
 		if(result > 0) {
 			sqlSession.commit();
 		} else {
 			sqlSession.rollback();
 		}
+		
 		sqlSession.close();
 
-		return result;
+		return result > 0? true: false;
+	}
+
+	public ItemDTO selectItem(int itemNo) {
+		
+		SqlSession sqlSession = getSqlSession();
+		mapper = sqlSession.getMapper(SqlMapper.class);
+
+		ItemDTO item = mapper.selectItem(itemNo);
+		
+		return item;
 	}
 
 }

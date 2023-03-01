@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -115,12 +116,23 @@ public class SignUpPage extends JPanel {
 				String id = inputId.getText();
 				String pwd = new String(inputPwd.getPassword());
 				String nickName = inputNickname.getText();
-
-				/* id, pwd, nickName을 DB에 insert 시키는 컨트롤러 작성 */
-				PlayerController playerController = new PlayerController();
-				playerController.insertplayer(id, pwd, nickName);
-				changePanel(mf, signupPage, new GameMenu(mf));
-			
+				
+				if(nickName.length() < 9) {
+					/* id, pwd, nickName을 DB에 insert 시키는 컨트롤러 작성 */
+					PlayerController playerController = new PlayerController();
+					boolean result = playerController.insertplayer(id, pwd, nickName);
+					
+					if(result) {
+						JOptionPane.showMessageDialog(null, "회원가입에 성공했습니다!");
+						changePanel(mf, signupPage, new GameMenu(mf));
+					} else {
+						JOptionPane.showMessageDialog(null, "회원가입에 실패했습니다.");
+					}
+					
+				} else {
+					JOptionPane.showMessageDialog(null, "닉네임은 8글자 이내로 작성해주세요.");
+					inputNickname.setText("");
+				}
 			}
 		});
 

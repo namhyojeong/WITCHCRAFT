@@ -15,16 +15,16 @@ public interface SqlMapper {
 
 	List<ItemDTO> storeList();
 
-	PlayerDTO playerGoldChange(PlayerDTO playerNo, ItemDTO itemNo);
-
 	int insertstoreitem(Map<String, Integer> inven);
 
-	int playerGoldChange(Map<String, Integer> gold);
+	int updatePlayerGold(Map<String, Integer> gold);
 
 	List<MyItemInven> myItemInven(int playerNo);
 
-	int deleteStoreItem(int invenNo);
-
 	List<ItemInvenDTO> sellItem(ItemInvenDTO itemInvenDTO);
+
+	int deleteSellItem(Map<String, Integer> delete);
+
+	ItemDTO selectItem(int itemNo);
 
 }

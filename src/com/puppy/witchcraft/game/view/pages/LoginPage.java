@@ -13,14 +13,17 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import com.puppy.witchcraft.common.CommonConstants;
 import com.puppy.witchcraft.common.MainFrame;
+import com.puppy.witchcraft.game.controller.LoginController;
+import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.view.GameMenu;
-import com.puppy.witchcraft.game.view.MainMap;
+import com.puppy.witchcraft.game.view.StartMenu;
 
 public class LoginPage extends JPanel {
 
@@ -32,14 +35,12 @@ public class LoginPage extends JPanel {
 	private Font font = new Font("Sans Serif", Font.BOLD, 18);
 
 	/* 전역변수에 계속 쓰일 프레임 및 패널 지정*/
-	private MainFrame mf;
 	private JPanel loginPage;
 
 	/* 생성자 */
 	public LoginPage(MainFrame mf) {
 
 		/*현재 프레임 및 클래스 set*/
-		this.mf = mf;
 		this.loginPage = this;
 
 		/* 라벨에 배경이미지 삽입*/
@@ -77,7 +78,7 @@ public class LoginPage extends JPanel {
 		});
 
 		/* 비밀번호 입력창 생성 */
-		JPasswordField inputPwd = new JPasswordField();
+		JTextField inputPwd = new JPasswordField();
 		inputPwd.setBounds(350, 320, 200, 40);
 		inputPwd.setBackground(Color.WHITE);
 
@@ -93,15 +94,20 @@ public class LoginPage extends JPanel {
 
 				/* 입력한 아이디와 DB에 저장된 정보가 일치한지 확인 */
 				String id = inputId.getText();
-
-				/* 일치하면 MainMap으로 아이디와 함께 이동*/
-				if(true) {
-					changePanel(mf, loginPage, new MainMap(mf)); 	//추후 플레이어 아이디도 파라미터로 넘겨야함
-				} else {
-					System.out.println("로그인 실패");
-				}
+				String pwd = inputPwd.getText();
 				
+				/* 기존 회원 정보 가져오기 */
+				LoginController loginController = new LoginController();
+				PlayerDTO player = loginController.getPlayer(id, pwd);
+				
+				if(player != null) {
+					JOptionPane.showMessageDialog(null,"환영합니다! " + player.getPlayerNickname() + "님!");
+					changePanel(mf, loginPage, new StartMenu(mf, player));
+				} else {
+					JOptionPane.showMessageDialog(null,"다시 로그인해주세요.");
+				}
 			}
+			
 		});
 
 		/* 나가기 버튼 생성 */

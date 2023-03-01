@@ -16,16 +16,11 @@ import com.puppy.witchcraft.game.view.pages.StorePage;
 
 public class StoreMenu extends JPanel {
 
-	private MainFrame mf;
 	private JPanel storeMenu;
-	private PlayerDTO player = new PlayerDTO();
 	
-	public StoreMenu(MainFrame mf) {
-		
-		player.setPlayerNo(1);
+	public StoreMenu(MainFrame mf, PlayerDTO player) {
 		
 		/* 현재 프레임 및 클래스 set */
-		this.mf = mf;
 		this.storeMenu = this;
 		
 		/* 라벨에 배경이미지 삽입 */
@@ -36,28 +31,27 @@ public class StoreMenu extends JPanel {
 		JButton storeUseBtn = new JButton(new ImageIcon("images/select/store_use.png"));
 		storeUseBtn.setBounds(330, 175, 450, 100);
 		storeUseBtn.setContentAreaFilled(false);
+		storeUseBtn.setBorder(null);
 		
 		/* 상점이용하기 버튼 클릭 시 상점 화면 패널로 변경 */
 		storeUseBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				changePanel(mf, storeMenu, new StorePage(mf, player));
-				System.out.println("상점 이용하기 페이지로 이동");
 			}
 		});
 		/* 나가기 버튼 생성 후 상점 나가기 이미지 삽입 */
 		JButton quitBtn = new JButton(new ImageIcon("images/select/map_quit.png"));
 		quitBtn.setBounds(330, 275, 450, 100);
 		quitBtn.setContentAreaFilled(false);
-		
+		quitBtn.setBorder(null);
 		
 		/* 나가기 버튼 클릭 시 메인맵 패널로 변경*/
 		quitBtn.addActionListener(new ActionListener() {
 	
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, storeMenu, new MainMap(mf));
-				System.out.println("메인맵 페이지로 이동");
+				changePanel(mf, storeMenu, new MainMap(mf, player));
 			}
 		});
 		
@@ -77,7 +71,6 @@ public class StoreMenu extends JPanel {
 		
 		/* 배경이미지 레이어위치 맨뒤로 보내기 */
 		mf.getLayeredPane().setLayer(background, 0);
-		
 		
 	}
 }

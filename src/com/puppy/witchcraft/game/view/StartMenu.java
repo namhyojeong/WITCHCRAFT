@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import com.puppy.witchcraft.common.CommonConstants;
 import com.puppy.witchcraft.common.MainFrame;
+import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 
 public class StartMenu extends JPanel {
 
@@ -22,22 +23,20 @@ public class StartMenu extends JPanel {
 	private Color GRAYCOLOR = CommonConstants.GRAYCOLOR;
 
 	/* 전역변수에 계속 쓰일 프레임 및 패널 지정 */
-	private MainFrame mf;
 	private JPanel startMenu;
 
 	/* 생성자 */
-	public StartMenu(MainFrame mf) {
+	public StartMenu(MainFrame mf, PlayerDTO player) {
 
 		/*현재 프레임 및 클래스 set*/
-		this.mf = mf;
 		this.startMenu = this;
 
 		/* 라벨에 배경이미지 삽입*/
-		JLabel background = new JLabel(new ImageIcon("images/start_bg.png"));
+		JLabel background = new JLabel(new ImageIcon("images/background/bg_start.png"));
 		background.setBounds(0, -15, 800, 580);
 
 		/* 라벨에 타이틀로고 삽입 */
-		JLabel logo = new JLabel(new ImageIcon("images/start_logo.png"));
+		JLabel logo = new JLabel(new ImageIcon("images/ui/title_logo.png"));
 		logo.setBounds(140, 120, 523, 190);
 
 		/* 게임시작 버튼 생성 */
@@ -49,7 +48,7 @@ public class StartMenu extends JPanel {
 		startBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, startMenu, new MainMap(mf));	//추후 아이디도 함께 전달
+				changePanel(mf, startMenu, new MainMap(mf, player));
 			}
 		});
 

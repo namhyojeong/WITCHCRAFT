@@ -24,13 +24,9 @@ import com.puppy.witchcraft.game.model.dto.RecipeItem;
 
 public class RecipeDialog extends JDialog{
 
-	static MainFrame mf;
-
 	public RecipeDialog(MainFrame mf) {
 
 		SelectRecipeController selectRecipeController = new SelectRecipeController();
-
-		this.mf = mf;
 
 		setTitle("RECIPE");
 		setLayout(null);

@@ -8,36 +8,36 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.puppy.witchcraft.game.model.dto.ImageDTO;
-import com.puppy.witchcraft.game.model.dto.MyItemInven;
+import com.puppy.witchcraft.game.model.dto.MyPotionInven;
 import com.puppy.witchcraft.game.model.mapper.player.SqlMapper;
 
-public class SelectItemInvenService {
-	
+public class SelectPotionInvenService {
+
 	private static SqlMapper mapper;
 
-	public List<MyItemInven> myItemInven(int playerNo) {
-		
+	public List<MyPotionInven> myPotionInven(int playerNo) {
+
 		SqlSession sqlSession = getSqlSession();
 		mapper = sqlSession.getMapper(SqlMapper.class);
-		
-		List<MyItemInven> itemList = new ArrayList<>();
-		
-		itemList = mapper.myItemInven(playerNo);
-		
+
+		List<MyPotionInven> potionList = new ArrayList<>();
+
+		potionList = mapper.myPotionInven(playerNo);
+
 		sqlSession.close();
-		
-		return itemList;
+
+		return potionList;
 	}
 
 	public ImageDTO imageSource(int imageNo) {
-		
+
 		SqlSession sqlSession = getSqlSession();
 		mapper = sqlSession.getMapper(SqlMapper.class);
-		
+
 		ImageDTO image = mapper.selectImage(imageNo);
-		
+
 		sqlSession.close();
-		
+
 		return image;
 	}
 

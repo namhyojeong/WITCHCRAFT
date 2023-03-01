@@ -21,6 +21,7 @@ public class CommonConstants {
 		btn.setForeground(c2);
 		Font font = new Font("Inter", Font.BOLD, 20);
 		btn.setFont(font);
+		btn.setBorder(null);
 	}
 	
 	public static void changePanel(MainFrame mf, JPanel oldPanel, JPanel newPanel) {

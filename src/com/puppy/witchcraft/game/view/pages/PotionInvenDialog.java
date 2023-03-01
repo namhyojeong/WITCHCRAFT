@@ -13,25 +13,25 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import com.puppy.witchcraft.common.MainFrame;
-import com.puppy.witchcraft.game.controller.SelectItemInvenController;
-import com.puppy.witchcraft.game.model.dto.MyItemInven;
+import com.puppy.witchcraft.game.controller.SelectPotionInvenController;
+import com.puppy.witchcraft.game.model.dto.MyPotionInven;
 import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 
-public class ItemInvenDialog extends JDialog{
+public class PotionInvenDialog extends JDialog {
 
-	private List<MyItemInven> itemList = new ArrayList<>();
-
-	public ItemInvenDialog(MainFrame mf, PlayerDTO player) {
-
-		SelectItemInvenController selectItemInvenController = new SelectItemInvenController();
-
+	private List<MyPotionInven> potionList = new ArrayList<>();
+	
+	public PotionInvenDialog(MainFrame mf, PlayerDTO player) {
+		
+		SelectPotionInvenController selectPotionInvenController = new SelectPotionInvenController();
+		
 		//현재 다이얼로그 set
-		setTitle("ITEM INVENTORY");
+		setTitle("POTION INVENTORY");
 		setLayout(null);
 		setBounds(0, 0, 355, 440);
-
+		
 		/* 인벤토리 이미지 생성 */
-		JLabel invenBg = new JLabel(new ImageIcon("images/ui/inventory_item.png"));
+		JLabel invenBg = new JLabel(new ImageIcon("images/ui/inventory_potion.png"));
 		invenBg.setBounds(0, 0, 340, 400);
 
 		/* 인벤토리 정렬 버튼 이미지로 생성 */
@@ -47,11 +47,11 @@ public class ItemInvenDialog extends JDialog{
 		invenPanel.setLayout(new GridLayout(4, 4, 9, 5));
 
 		/* 플레이어 인벤토리 조회 컨트롤러 */
-		itemList = selectItemInvenController.myItemInven(player);
+		potionList = selectPotionInvenController.myPotionInven(player);
 
 		/* 인벤토리 칸 생성 및 클릭 시 요청 */
 		List<JButton> blank = new ArrayList<>();
-
+		
 		for(int i = 0; i < 16; i++) {
 			blank.add(new JButton());
 			blank.get(i).setLayout(null);
@@ -60,16 +60,16 @@ public class ItemInvenDialog extends JDialog{
 			blank.get(i).setBorder(null);
 			invenPanel.add(blank.get(i));
 
-			if(i < itemList.size()) {
+			if(i < potionList.size()) {
 
 				int index = i;
 
 				/*버튼에 해당 재료 이미지 설정*/
-				String imageUrl = selectItemInvenController.itemImage(itemList.get(i));
+				String imageUrl = selectPotionInvenController.potionImage(potionList.get(i));
 				blank.get(i).setIcon(new ImageIcon(imageUrl));
 				blank.get(i).setHorizontalTextPosition(SwingConstants.CENTER);
 
-				JLabel count = new JLabel(itemList.get(i).getItemCount()+"개");
+				JLabel count = new JLabel(potionList.get(i).getPotionCount()+"개");
 				count.setBounds(43, 43, 20, 20);
 				count.setForeground(Color.WHITE);
 				blank.get(i).add(count);
@@ -79,17 +79,17 @@ public class ItemInvenDialog extends JDialog{
 				blank.get(i).setVisible(false);
 			}
 		}
-		
+
 		invenBg.add(invenPanel);
 		invenBg.add(alignBtn);
 
 		/* 패널에 컴포넌트들 삽입 */
 		add(invenBg);
 		
-		setLocation(mf.getLocation().x - 400, mf.getLocation().y);
+		setLocation(mf.getLocation().x - 400, mf.getLocation().y + 300);
 		setResizable(false);
 		setVisible(true);
+		
 	}
-
-
+	
 }

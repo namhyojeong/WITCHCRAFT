@@ -11,21 +11,21 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.puppy.witchcraft.common.MainFrame;
+import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.view.pages.ItemInvenDialog;
+import com.puppy.witchcraft.game.view.pages.PotionInvenDialog;
 import com.puppy.witchcraft.game.view.pages.RecipeDialog;
 import com.puppy.witchcraft.game.view.pages.SavePage;
 
 public class MainMap extends JPanel {
 	
 	/* 전역변수에 계속 쓰일 프레임 및 패널 지정*/
-	private MainFrame mf;
 	private JPanel mainMap;
 
 	/* 생성자 */
-	public MainMap(MainFrame mf) {
+	public MainMap(MainFrame mf, PlayerDTO player) {
 		
 		/*현재 프레임 및 클래스 set*/
-		this.mf = mf;
 		this.mainMap = this;
 		
 		/* 라벨에 배경이미지 삽입*/
@@ -36,11 +36,11 @@ public class MainMap extends JPanel {
 		JButton saveBtn = new JButton(new ImageIcon("images/ui/ui_save.png"));
 		saveBtn.setBounds(20, 20, 50, 50);
 		saveBtn.setContentAreaFilled(false);
-		
+		saveBtn.setBorderPainted(false);
 		saveBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, mainMap, new SavePage(mf));
+				changePanel(mf, mainMap, new SavePage(mf, player));
 			}
 		});
 		
@@ -48,11 +48,13 @@ public class MainMap extends JPanel {
 		JButton invenBtn = new JButton(new ImageIcon("images/ui/ui_inventory.png"));
 		invenBtn.setBounds(620, 460, 70, 70);
 		invenBtn.setContentAreaFilled(false);
+		invenBtn.setBorderPainted(false);
 		invenBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ItemInvenDialog(mf);
+				new ItemInvenDialog(mf, player);
+				new PotionInvenDialog(mf, player);
 			}
 		});
 		
@@ -60,6 +62,7 @@ public class MainMap extends JPanel {
 		JButton recipeBtn = new JButton(new ImageIcon("images/ui/ui_recipe.png"));
 		recipeBtn.setBounds(710, 460, 70, 70);
 		recipeBtn.setContentAreaFilled(false);
+		recipeBtn.setBorderPainted(false);
 		recipeBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -72,12 +75,13 @@ public class MainMap extends JPanel {
 		JButton potionBtn = new JButton(new ImageIcon("images/ui/button_potion.png"));
 		potionBtn.setBounds(300, 100, 100, 55);
 		potionBtn.setContentAreaFilled(false);
+		potionBtn.setBorderPainted(false);
 		
 		/* 포션가게 버튼 클릭 시 포션가게 패널로 변경*/
 		potionBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, mainMap, new WorkroomMenu(mf));
+				changePanel(mf, mainMap, new WorkroomMenu(mf, player));
 			}
 		});
 		
@@ -85,12 +89,12 @@ public class MainMap extends JPanel {
 		JButton forestBtn = new JButton(new ImageIcon("images/ui/button_forest.png"));
 		forestBtn.setBounds(600, 350, 100, 55);
 		forestBtn.setContentAreaFilled(false);
-		
+		forestBtn.setBorderPainted(false);
 		/* 숲 버튼 클릭 시 숲 패널로 변경*/
 		forestBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, mainMap, new ForestMenu(mf));
+				changePanel(mf, mainMap, new ForestMenu(mf, player));
 			}
 		});
 		
@@ -98,12 +102,12 @@ public class MainMap extends JPanel {
 		JButton storeBtn = new JButton(new ImageIcon("images/ui/button_store.png"));
 		storeBtn.setBounds(140, 350, 100, 55);
 		storeBtn.setContentAreaFilled(false);
-		
+		storeBtn.setBorderPainted(false);
 		/* 상점 버튼 클릭 시 상점 패널로 변경*/
 		storeBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, mainMap, new StoreMenu(mf)); //임시로 포션제작페이지로 이동
+				changePanel(mf, mainMap, new StoreMenu(mf, player));
 			}
 		});
 		
