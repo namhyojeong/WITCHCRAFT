@@ -1,17 +1,13 @@
-package com.puppy.witchcraft.game.model.mapper.forest;
+package com.puppy.witchcraft.game.model.mapper.player;
 
-import java.util.List;
 import java.util.Map;
 
-import com.puppy.witchcraft.game.model.dto.ItemDTO;
+import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 
 public interface SqlMapper {
 
-	ItemDTO rnditem(int randomitem);
+	PlayerDTO player(int insertplayer);
 
-	int insertforestitem(Map<String, Integer> inven);
-
-
-	
+	int insertplayer(Map<String, String> player);
 
 }

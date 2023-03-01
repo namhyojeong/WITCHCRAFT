@@ -19,29 +19,28 @@ import javax.swing.JTextField;
 
 import com.puppy.witchcraft.common.CommonConstants;
 import com.puppy.witchcraft.common.MainFrame;
+import com.puppy.witchcraft.game.controller.PlayerController;
 import com.puppy.witchcraft.game.view.GameMenu;
-import com.puppy.witchcraft.game.view.MainMap;
-import com.puppy.witchcraft.game.view.StartMenu;
 
-public class SigninPage extends JPanel {
+public class SignUpPage extends JPanel {
 
 	/* 전역변수에 컬러파레트 지정 */
 	private Color MAINCOLOR = CommonConstants.MAINCOLOR;
 	private Color GRAYCOLOR = CommonConstants.GRAYCOLOR;
-	
+
 	/* 폰트크기때문에 폰트 설정 */
 	private Font font = new Font("Sans Serif", Font.BOLD, 18);
 
 	/* 전역변수에 계속 쓰일 프레임 및 패널 지정*/
 	private MainFrame mf;
-	private JPanel signinPage;
+	private JPanel signupPage;
 
 	/* 생성자 */
-	public SigninPage(MainFrame mf) {
+	public SignUpPage(MainFrame mf) {
 
 		/*현재 프레임 및 클래스 set*/
 		this.mf = mf;
-		this.signinPage = this;
+		this.signupPage = this;
 
 		/* 라벨에 배경이미지 삽입*/
 		JLabel background = new JLabel(new ImageIcon("images/background/bg_start.png"));
@@ -103,23 +102,25 @@ public class SigninPage extends JPanel {
 		});
 
 		/* 회원가입요청 버튼 생성 */
-		JButton signInBtn = new JButton("Sign In");									
-		signInBtn.setBounds(205, 440, 190, 55);
-		setButtonColor(signInBtn, MAINCOLOR, Color.WHITE);
+		JButton signUpBtn = new JButton("Sign Up");									
+		signUpBtn.setBounds(205, 440, 190, 55);
+		setButtonColor(signUpBtn, MAINCOLOR, Color.WHITE);
 
 		// 조건 설정 아직 안함
 		/* 회원가입요청 버튼 클릭 시 입력값 받고 (조건에 맞으면) GameMenu 패널로 변경*/
-		signInBtn.addActionListener(new ActionListener() {
+		signUpBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				String id = inputId.getText();
-				char[] pwd = inputPwd.getPassword();
+				String pwd = new String(inputPwd.getPassword());
 				String nickName = inputNickname.getText();
-				
-				/* id, pwd, nickName을 DB에 insert 시키는 컨트롤러 작성 */
 
-				changePanel(mf, signinPage, new GameMenu(mf));
+				/* id, pwd, nickName을 DB에 insert 시키는 컨트롤러 작성 */
+				PlayerController playerController = new PlayerController();
+				playerController.insertplayer(id, pwd, nickName);
+				changePanel(mf, signupPage, new GameMenu(mf));
+			
 			}
 		});
 
@@ -133,7 +134,7 @@ public class SigninPage extends JPanel {
 		quitBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, signinPage, new GameMenu(mf));
+				changePanel(mf, signupPage, new GameMenu(mf));
 			}
 		});
 
@@ -152,7 +153,7 @@ public class SigninPage extends JPanel {
 		this.add(inputPwd);
 		this.add(inputNickname);
 
-		this.add(signInBtn);
+		this.add(signUpBtn);
 		this.add(quitBtn);
 
 		this.add(background);
