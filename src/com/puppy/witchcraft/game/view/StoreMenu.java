@@ -1,5 +1,7 @@
 package com.puppy.witchcraft.game.view;
 
+import static com.puppy.witchcraft.common.CommonConstants.changePanel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,15 +11,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.puppy.witchcraft.common.MainFrame;
+import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.view.pages.StorePage;
-import static com.puppy.witchcraft.common.CommonConstants.changePanel;
 
 public class StoreMenu extends JPanel {
 
 	private MainFrame mf;
 	private JPanel storeMenu;
+	private PlayerDTO player = new PlayerDTO();
 	
 	public StoreMenu(MainFrame mf) {
+		
+		player.setPlayerNo(1);
 		
 		/* 현재 프레임 및 클래스 set */
 		this.mf = mf;
@@ -36,7 +41,7 @@ public class StoreMenu extends JPanel {
 		storeUseBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, storeMenu, new StorePage(mf));
+				changePanel(mf, storeMenu, new StorePage(mf, player));
 				System.out.println("상점 이용하기 페이지로 이동");
 			}
 		});

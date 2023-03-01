@@ -32,6 +32,35 @@
 	<result property="itemCount" column="ITEMCOUNT"/>
 	<result property="imageNo" column="IMAGE_NO"/>
 	</resultMap>
+	
+   <resultMap id="selectItemInvenResultMap" type="com.puppy.witchcraft.game.model.dto.ItemInvenDTO">
+	<id property="invenNo" column="INVEN_NO"/>
+	<result property="playerNo" column="P_NO"/>
+	<result property="itemNo" column="ITEM_NO"/>
+	</resultMap>
+
+	<select id="sellItem" resultMap="selectItemInvenResultMap" parameterType="com.puppy.witchcraft.game.model.dto.ItemInvenDTO" >
+	delete from item_inven
+	where inven_no = 
+	(
+	select p.inven_no
+       	   from 
+       	   (
+              	  select rownum r, v.*
+                  from (
+                     	 select *
+                     	 from item_inven
+                         where item_no = #{ itemNo }
+                           and p_no = #{ playerNo }
+                         order by inven_no
+                  ) v
+               
+           )p
+WHERE p.R = 1
+)
+	
+
+	</select> 
 
 	<select id="myItemInven" resultMap="itemInvenResultMap" parameterType="_int">
 	SELECT
@@ -73,12 +102,13 @@
 	UPDATE
 	       PLAYER P
 	   SET
-	       P.PLAYER_GOLD = #{ gold }
-	 WHERE P.P_NO ={ no }
+	       P.PLAYER_GOLD = #{ playerGold }
+	 WHERE P.P_NO = #{ playerNo }
 	  
 	</update>
 	
-	<insert id="insertstoreitem" parameterType="HashMap">
+	
+	<insert id="insertstoreitem" parameterType="hashmap">
       INSERT 
         INTO ITEM_INVEN
        (
@@ -93,4 +123,5 @@
          #{ itemNo }
        )
    </insert>
+   
 </mapper>

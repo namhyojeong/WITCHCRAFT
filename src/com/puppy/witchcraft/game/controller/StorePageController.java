@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 
 import com.puppy.witchcraft.game.model.dto.ImageDTO;
 import com.puppy.witchcraft.game.model.dto.ItemDTO;
+import com.puppy.witchcraft.game.model.dto.ItemInvenDTO;
 import com.puppy.witchcraft.game.model.dto.PlayerDTO;
 import com.puppy.witchcraft.game.model.dto.MyItemInven;
 import com.puppy.witchcraft.game.model.service.StorePageService;
@@ -51,16 +52,13 @@ public class StorePageController {
 			System.out.println("성공");
 		} else {
 			System.out.println("실패");
-
-
 		}
-
 	}
 
 	public List<MyItemInven> myItemInven(PlayerDTO pp) {
 
 		int playerNo = pp.getPlayerNo();
-		
+
 		List<MyItemInven> itemList = new ArrayList<>();
 
 		itemList = storePageService.myItemInven(playerNo);
@@ -77,15 +75,27 @@ public class StorePageController {
 			System.out.println("성공");
 		} else {
 			System.out.println("실패");
-
-
 		}
-
 	}
-}
 
+	public List<ItemInvenDTO> sellItem(ItemInvenDTO itemInvenDTO) {
 
+		List<ItemInvenDTO> invenItemList = new ArrayList<>();
 
+		invenItemList = storePageService.sellItem(itemInvenDTO);
 
+		return invenItemList;	
+	}
 
+	public void deleteStoreItem(int invenNo) {
+
+		int result = storePageService.deleteStoreItem(invenNo);
+
+		if(result > 0) {
+			System.out.println("성공");
+		} else {
+			System.out.println("실패");
+		}
+	}
+}	
 
