@@ -38,10 +38,9 @@
 </select>
 
 <resultMap id="recipeAndPotionResultMap" type="com.puppy.witchcraft.game.model.dto.RecipeAndPotion">
-	<id property="recipeNo" column="RECIPE_NO"/>
 	<id property="potionNo" column="POTION_NO"/>
 	<collection property="itemList" ofType="com.puppy.witchcraft.game.model.dto.ItemDTO">
-		<id property="itemNo" column="ITEM_NO"/>
+		<result property="itemNo" column="ITEM_NO"/>
 		<result property="itemType" column="ITEM_TYPE"/>
 		<result property="itemName" column="ITEM_NAME"/>
 		<result property="itemInfo" column="ITEM_INFO"/>
@@ -53,8 +52,7 @@
 
 <select id="selectAllRecipe" resultMap="recipeAndPotionResultMap">
 	SELECT
-	       R.RECIPE_NO
-	     , R.POTION_NO
+	       R.POTION_NO
 	     , I.ITEM_NO
 	     , I.ITEM_TYPE
 	     , I.ITEM_NAME
@@ -69,20 +67,34 @@
 
 <resultMap id="recipeResultMap" type="com.puppy.witchcraft.game.model.dto.RecipeDTO">
 	<id property="recipeNo" column="RECIPE_NO"/>
-	<id property="potionNo" column="POTION_NO"/>
-	<id property="itemCount" column="ITEM_COUNT"/>
-	<id property="itemNo" column="ITEM_NO"/>
+	<result property="itemNo" column="ITEM_NO"/>
+	<result property="potionNo" column="POTION_NO"/>
 </resultMap>
 
 <select id="selectRecipe" resultMap="recipeResultMap" parameterType="_int">
 	SELECT
 	       R.RECIPE_NO
-	     , R.POTION_NO
-	     , R.ITEM_COUNT
 	     , R.ITEM_NO
+	     , R.POTION_NO
 	 FROM RECIPE R
-	 WHERE R.RECIPE_NO = #{ recipeNo }
+	 WHERE R.POTION_NO = #{ potion_no }
 	 ORDER BY R.RECIPE_NO
+</select>
+
+<resultMap id="recipeItemResultMap" type="com.puppy.witchcraft.game.model.dto.RecipeItem">
+    <id property="itemNo" column="ITEM_NO"/>
+	<result property="itemCount" column="ITEM_COUNT"/>
+	<result property="potionNo" column="POTION_NO"/>
+</resultMap>
+
+<select id="selectRecipeItems" resultMap="recipeItemResultMap" parameterType="_int">
+	SELECT
+	       R.ITEM_NO
+         , COUNT(R.ITEM_NO) AS ITEM_COUNT
+         , R.POTION_NO
+ 	  FROM RECIPE R
+	 WHERE R.POTION_NO = #{ potionNo }
+	 GROUP BY R.POTION_NO, R.ITEM_NO
 </select>
 
 <resultMap id="potionResultMap" type="com.puppy.witchcraft.game.model.dto.PotionDTO" >
@@ -103,5 +115,40 @@
 	  FROM POTION P
 	 WHERE P.POTION_NO = #{ potionNo }
 </select>
+
+<insert id="insertPotionInven" parameterType="HashMap">
+	INSERT 
+	INTO POTION_INVEN
+	(
+	INVEN_NO,
+	P_NO,
+	POTION_NO
+	)
+	VALUES
+	(
+	SEQ_POTION_INVEN_NO.NEXTVAL,
+	#{ playerNo },
+	#{ potionNo }
+	)
+</insert>
+
+<delete id="deleteUseItem" parameterType="HashMap">
+	DELETE FROM ITEM_INVEN I2
+	 WHERE I2.INVEN_NO = (
+				     	   SELECT P.INVEN_NO
+      					   FROM (
+              				 	 SELECT ROWNUM R, V.*
+             			           FROM (
+                   						 SELECT *
+                     				       FROM ITEM_INVEN I
+                                          WHERE I.P_NO = #{ playerNo }
+                                            AND I.ITEM_NO = #{ itemNo }
+                                          ORDER BY I.INVEN_NO
+              							 ) v
+               
+      						    )P
+                          WHERE P.R = 1
+                        )
+</delete>
 
 </mapper>

@@ -18,14 +18,13 @@ import javax.swing.SwingConstants;
 
 import com.puppy.witchcraft.common.MainFrame;
 import com.puppy.witchcraft.game.controller.SelectRecipeController;
-import com.puppy.witchcraft.game.model.dto.ItemDTO;
 import com.puppy.witchcraft.game.model.dto.PotionDTO;
 import com.puppy.witchcraft.game.model.dto.RecipeAndPotion;
-import com.puppy.witchcraft.game.model.dto.RecipeDTO;
+import com.puppy.witchcraft.game.model.dto.RecipeItem;
 
 public class RecipeDialog extends JDialog{
 
-	private MainFrame mf;
+	static MainFrame mf;
 
 	public RecipeDialog(MainFrame mf) {
 
@@ -56,7 +55,7 @@ public class RecipeDialog extends JDialog{
 		List<RecipeAndPotion> recipeAllList = selectRecipeController.selectAllRecipe();
 
 		/* 레시피당 패널 만들기 */
-		for(int i=0; i < recipeAllList.size(); i++) {
+		for(int i = 0; i < recipeAllList.size(); i++) {
 			JPanel rowPanel = new JPanel();
 			rowPanel.setPreferredSize(new Dimension(450,150));
 			scrollPanel.add(rowPanel);
@@ -96,36 +95,24 @@ public class RecipeDialog extends JDialog{
 			itemPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 			itemPanel.setBackground(Color.BLACK);
 
-			/* 현재 레시피... */
-			int recipeNo = i + 1;
-			List<RecipeDTO> recipe = selectRecipeController.selectRecipe(recipeNo);
-
-			/* 현재 레시피에서 필요아이템 리스트 */
-			List<ItemDTO> recipeItemList = recipeAllList.get(i).getItemList();
-
-			int index = 0;
-			for(ItemDTO recipeItem : recipeItemList) {
-
-				System.out.println(recipeItem);
-
-				String itemSource = selectRecipeController.itemImage(recipeItem);
+			/* 현재 레시피의 재료 */
+			List<RecipeItem> recipeItems = selectRecipeController.selectRecipeItems(potionNo);
+			
+			for(int j = 0; j < recipeItems.size(); j++) {
+				
+				String itemSource = selectRecipeController.itemImage(recipeAllList.get(i).getItemList().get(j));
 				Image itemimg = new ImageIcon(itemSource).getImage();
 				Image itemImgResize = itemimg.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
 				JLabel itemLabel = new JLabel(new ImageIcon(itemImgResize));
 				itemLabel.setSize(50, 50);
 
-				if(index < recipe.size()) {
-					JLabel count = new JLabel("0");
-					count.setText(recipe.get(index).getItemCount() + "");
-					count.setBounds(20, 10, 30, 30);
-					count.setFont(new Font("Sans Serif", Font.BOLD, 20));
-					count.setForeground(Color.WHITE);
+				JLabel count = new JLabel("0");
+				count.setText(recipeItems.get(j).getItemCount() + "");
+				count.setBounds(20, 10, 30, 30);
+				count.setFont(new Font("Sans Serif", Font.BOLD, 20));
+				count.setForeground(Color.WHITE);
 
-					index++;
-
-					itemLabel.add(count);
-				}
-
+				itemLabel.add(count);
 				itemPanel.add(itemLabel);
 			}
 

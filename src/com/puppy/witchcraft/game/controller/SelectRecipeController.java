@@ -7,6 +7,7 @@ import com.puppy.witchcraft.game.model.dto.ItemDTO;
 import com.puppy.witchcraft.game.model.dto.PotionDTO;
 import com.puppy.witchcraft.game.model.dto.RecipeAndPotion;
 import com.puppy.witchcraft.game.model.dto.RecipeDTO;
+import com.puppy.witchcraft.game.model.dto.RecipeItem;
 import com.puppy.witchcraft.game.model.service.SelectRecipeService;
 
 public class SelectRecipeController {
@@ -28,13 +29,20 @@ public class SelectRecipeController {
 		return recipeAllList;
 	}
 	
+
+	public List<RecipeItem> selectRecipeItems(int potionNo) {
+		
+		List<RecipeItem> recipeItems = selectRecipeService.selectRecipeItems(potionNo);
+		
+		return recipeItems;
+	}
+	
 	public PotionDTO selectPotion(int potionNo) {
 		
 		PotionDTO potion = selectRecipeService.selectPotion(potionNo);
 		
 		return potion;
 	}
-
 	
 	/* 레시피의 포션 이미지 */
 	public String potionImage(PotionDTO potion) {
@@ -59,6 +67,5 @@ public class SelectRecipeController {
 		
 		return source;
 	}
-
 
 }

@@ -4,25 +4,14 @@ import java.util.List;
 
 public class RecipeAndPotion {
 
-	private int recipeNo;
 	private int potionNo;
 	private List<ItemDTO> itemList;
 	
 	public RecipeAndPotion() {}
 
-	public RecipeAndPotion(int recipeNo, int potionNo, List<ItemDTO> itemList) {
-		super();
-		this.recipeNo = recipeNo;
+	public RecipeAndPotion(int potionNo, List<ItemDTO> itemList) {
 		this.potionNo = potionNo;
 		this.itemList = itemList;
-	}
-
-	public int getRecipeNo() {
-		return recipeNo;
-	}
-
-	public void setRecipeNo(int recipeNo) {
-		this.recipeNo = recipeNo;
 	}
 
 	public int getPotionNo() {
@@ -43,8 +32,8 @@ public class RecipeAndPotion {
 
 	@Override
 	public String toString() {
-		return "RecipeAndPotion [recipeNo=" + recipeNo + ", potionNo=" + potionNo +
-				", itemList=" + itemList + "]";
+		return "RecipeAndPotion [potionNo=" + potionNo + ", itemList=" + itemList + "]";
 	}
+
 
 }
