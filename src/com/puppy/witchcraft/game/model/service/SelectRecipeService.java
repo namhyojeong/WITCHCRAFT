@@ -10,6 +10,7 @@ import com.puppy.witchcraft.game.model.dto.ImageDTO;
 import com.puppy.witchcraft.game.model.dto.PotionDTO;
 import com.puppy.witchcraft.game.model.dto.RecipeAndPotion;
 import com.puppy.witchcraft.game.model.dto.RecipeDTO;
+import com.puppy.witchcraft.game.model.dto.RecipeItem;
 import com.puppy.witchcraft.game.model.mapper.craft.SqlMapper;
 
 public class SelectRecipeService {
@@ -29,16 +30,29 @@ public class SelectRecipeService {
 	}
 	
 
-	public List<RecipeDTO> selectRecipe(int recipeNo) {
+	public List<RecipeDTO> selectRecipe(int potionNo) {
 		
 		SqlSession sqlSession = getSqlSession();
 		mapper = sqlSession.getMapper(SqlMapper.class);
 		
-		List<RecipeDTO> recipeList = mapper.selectRecipe(recipeNo);
+		List<RecipeDTO> recipeList = mapper.selectRecipe(potionNo);
 		
 		sqlSession.close();
 		
 		return recipeList;
+	}
+	
+
+	public List<RecipeItem> selectRecipeItems(int potionNo) {
+		
+		SqlSession sqlSession = getSqlSession();
+		mapper = sqlSession.getMapper(SqlMapper.class);
+		
+		List<RecipeItem> recipeitems = mapper.selectRecipeItems(potionNo);
+		
+		sqlSession.close();
+		
+		return recipeitems;
 	}
 
 	public PotionDTO selectPotion(int potionNo) {

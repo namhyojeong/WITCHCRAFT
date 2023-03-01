@@ -14,13 +14,19 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import com.puppy.witchcraft.common.MainFrame;
+import com.puppy.witchcraft.game.controller.PotionMakerController;
 import com.puppy.witchcraft.game.controller.SelectItemInvenController;
+import com.puppy.witchcraft.game.controller.SelectRecipeController;
 import com.puppy.witchcraft.game.model.dto.MyItemInven;
 import com.puppy.witchcraft.game.model.dto.PlayerDTO;
+import com.puppy.witchcraft.game.model.dto.PotionDTO;
+import com.puppy.witchcraft.game.model.dto.RecipeAndPotion;
+import com.puppy.witchcraft.game.model.dto.RecipeDTO;
 import com.puppy.witchcraft.game.view.WorkroomMenu;
 
 public class PotionCraftPage extends JPanel{
@@ -36,10 +42,12 @@ public class PotionCraftPage extends JPanel{
 	private int putIndex = 0;
 
 	Craft craft = new Craft();
-	SelectItemInvenController selectItemInvenController = new SelectItemInvenController();
-	
+
 	public PotionCraftPage(MainFrame mf) {
 
+		SelectItemInvenController selectItemInvenController = new SelectItemInvenController();
+		SelectRecipeController selectRecipeController = new SelectRecipeController();
+		PotionMakerController pmController = new PotionMakerController();
 
 		/*현재 프레임 및 클래스 set*/
 		this.mf = mf;
@@ -70,19 +78,12 @@ public class PotionCraftPage extends JPanel{
 			}
 		});
 
-//		/* 인벤토리 버튼 이미지로 생성 */
-//		JButton invenBtn = new JButton(new ImageIcon("images/ui/ui_inventory.png"));
-//		invenBtn.setBounds(620, 460, 70, 70);
-//		invenBtn.setContentAreaFilled(false);
-//		invenBtn.setBorder(null);
-
 		/* 레시피도감 버튼 이미지로 생성 */
 		JButton recipeBtn = new JButton(new ImageIcon("images/ui/ui_recipe.png"));
 		recipeBtn.setBounds(710, 460, 70, 70);
 		recipeBtn.setContentAreaFilled(false);
 		recipeBtn.setBorder(null);
 		recipeBtn.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new RecipeDialog(mf);
@@ -129,6 +130,10 @@ public class PotionCraftPage extends JPanel{
 			putPanel.add(putList.get(i));
 		}
 
+		//모든 레시피
+		List<RecipeAndPotion> recipeAllList = selectRecipeController.selectAllRecipe();
+
+
 		/* 가마솥 버튼 이미지로 생성 */
 		JButton touchCaldronBtn = new JButton(new ImageIcon("images/ui/caldron.png"));
 		touchCaldronBtn.setBounds(115, 230, 220, 250);
@@ -138,9 +143,61 @@ public class PotionCraftPage extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
+				boolean result = false;
+				PotionDTO potion = new PotionDTO();
+				// 포션 인벤토리에 포션 추가
+				boolean isPotionGet = false;
+
+				/* 아이템 리스트로 변환 */
+				List<Integer> clickRecipeItemList = new ArrayList<>();
+
+				for (MyItemInven item : clickItemList) {
+					clickRecipeItemList.add(item.getItemNo());
+				}
+
+				/* 레시피 휘뚜루 쫘아악 체크 */
+				for (int k = 0; k < recipeAllList.size(); k++) {
+
+					//한 레시피에 대한 아이템 리스트
+					List<Integer> recipeItemNoList = new ArrayList<>();
+
+					/* 현재 레시피... */
+					List<RecipeDTO> recipe = selectRecipeController.selectRecipe(k + 1);
+
+					for (int j = 0; j < recipe.size(); j++) {
+
+						recipeItemNoList.add(recipe.get(j).getItemNo());
+					}
+
+					if(recipeItemNoList.containsAll(clickRecipeItemList)) {
+
+						potion = pmController.selectPotion(recipe.get(k).getPotionNo()); 
+						isPotionGet = pmController.insertPotionInven(player, potion.getPotionNo());
+						result = true;
+						break;
+					}
+				}
+
+				if(result && isPotionGet) {
+
+					JOptionPane.showMessageDialog(null, potion.getPotionName() + "이 제작되었습니다!");
+
+					// 재료 인벤토리에 재료 삭제
+					for(int itemNo : clickRecipeItemList) {
+						pmController.deleteUseItem(player, itemNo);
+					}
+					// 패널 새로 고침
+					changePanel(mf, potionCraftPage, new PotionCraftPage(mf));
+
+				} if(result && !isPotionGet) {
+					JOptionPane.showMessageDialog(null, "제작 가능한 포션이 있지만 제작에 실패하였습니다.\n다시 시도해주세요.");
+				}
+
 				revalidate();
 				repaint();
 				putIndex = craft.resetCraft(clickItemList, putList);
+
 			}
 		});
 
@@ -212,11 +269,10 @@ public class PotionCraftPage extends JPanel{
 
 							/* 제작대 개수 변경 */
 							count.get(putIndex - 1).setText(clickCount + "");
-							
+
 						} else {
-							System.out.println("제작대 초과, 초기화 필요");
+							JOptionPane.showMessageDialog(null, "더이상 넣을 수 있는 재료가 없습니다!");
 						}
-						System.out.println(clickItemList);
 					}
 
 				});
@@ -235,9 +291,8 @@ public class PotionCraftPage extends JPanel{
 				blank.get(i).setVisible(false);
 			}
 		}
-		
-		/* 컴포넌트 세팅 */
 
+		/* 컴포넌트 세팅 */
 		touchCaldronBtn.add(touch);
 
 		invenBg.add(invenPanel);
@@ -246,7 +301,6 @@ public class PotionCraftPage extends JPanel{
 		/* 패널에 컴포넌트들 삽입 */
 		this.add(invenBg);
 		this.add(quitBtn);
-//		this.add(invenBtn);
 		this.add(recipeBtn);
 		this.add(info);
 		this.add(putPanel);
