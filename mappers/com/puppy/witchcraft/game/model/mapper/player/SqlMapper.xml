@@ -2,5 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.puppy.witchcraft.game.model.mapper.player.SqlMapper">
 
+<insert id="insertplayer" parameterType="HashMap">
+  INSERT INTO PLAYER (
+  		P_NO
+  	  , P_ID
+  	  , P_PWD
+  	  , P_NICKNAME
+  	  , P_GOLD
+  	  )
+  VALUES (
+  SEQ_PLAYER_NO.NEXTVAL
+   , #{ id }
+   , #{ pwd }
+   , #{ nickname }
+   , 0
+   )
+  
+</insert>
 
 </mapper>

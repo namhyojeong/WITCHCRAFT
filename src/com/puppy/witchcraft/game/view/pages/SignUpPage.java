@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 
 import com.puppy.witchcraft.common.CommonConstants;
 import com.puppy.witchcraft.common.MainFrame;
+import com.puppy.witchcraft.game.controller.PlayerController;
 import com.puppy.witchcraft.game.view.GameMenu;
 
 public class SignUpPage extends JPanel {
@@ -32,14 +33,14 @@ public class SignUpPage extends JPanel {
 
 	/* 전역변수에 계속 쓰일 프레임 및 패널 지정*/
 	private MainFrame mf;
-	private JPanel signinPage;
+	private JPanel signupPage;
 
 	/* 생성자 */
 	public SignUpPage(MainFrame mf) {
 
 		/*현재 프레임 및 클래스 set*/
 		this.mf = mf;
-		this.signinPage = this;
+		this.signupPage = this;
 
 		/* 라벨에 배경이미지 삽입*/
 		JLabel background = new JLabel(new ImageIcon("images/background/bg_start.png"));
@@ -112,12 +113,14 @@ public class SignUpPage extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				String id = inputId.getText();
-				char[] pwd = inputPwd.getPassword();
+				String pwd = new String(inputPwd.getPassword());
 				String nickName = inputNickname.getText();
 
 				/* id, pwd, nickName을 DB에 insert 시키는 컨트롤러 작성 */
-
-				changePanel(mf, signinPage, new GameMenu(mf));
+				PlayerController playerController = new PlayerController();
+				playerController.insertplayer(id, pwd, nickName);
+				changePanel(mf, signupPage, new GameMenu(mf));
+			
 			}
 		});
 
@@ -131,7 +134,7 @@ public class SignUpPage extends JPanel {
 		quitBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changePanel(mf, signinPage, new GameMenu(mf));
+				changePanel(mf, signupPage, new GameMenu(mf));
 			}
 		});
 
